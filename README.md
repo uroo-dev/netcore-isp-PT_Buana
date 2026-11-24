@@ -1,271 +1,327 @@
-# netcore-isp-PT_Buana
+<div align="center">
 
-<h1 align="center">🌐 PT Buana Network System (BuanaNet)</h1>
+# 🌐 netcore-isp-PT_Buana
+### Enterprise-Grade ISP Management, Automated Billing & Financial Ecosystem
 
-<p align="center">
-  <strong>Platform Terintegrasi Manajemen ISP, Penagihan Otomatis (Billing), Keuangan Real-Time, Multi-Cabang, dan Penggajian Karyawan</strong>
-</p>
+*Solusi Perangkat Lunak All-in-One untuk Manajemen Penyedia Jasa Internet (ISP), RT/RW Net, Penagihan Otomatis, Multi-Cabang, dan Penggajian Karyawan.*
 
-<p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel"></a>
-  <a href="#"><img src="https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Testing-Pest_PHP_v4-F3B000?style=for-the-badge&logo=pest&logoColor=black" alt="Pest"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Code_Style-Laravel_Pint-success?style=for-the-badge" alt="Pint"></a>
-  <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Testing](https://img.shields.io/badge/Pest_PHP-v4.6-F3B000?style=for-the-badge&logo=pest&logoColor=black)](https://pestphp.com)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![Code Style](https://img.shields.io/badge/Code_Style-Laravel_Pint-00D084?style=for-the-badge)](https://laravel.com/docs/pint)
+[![License](https://img.shields.io/badge/License-MIT-3B82F6?style=for-the-badge)](LICENSE)
 
----
-
-## 📌 Ringkasan Eksekutif (Executive Summary)
-
-**BuanaNet System** dikembangkan untuk menjawab tantangan operasional harian perusahaan penyedia jasa internet (ISP) dan pengelola jaringan RT/RW Net berskala multi-cabang. Sistem ini mengintegrasikan seluruh proses bisnis mulai dari pendaftaran pelanggan, pemetaan paket & penanggung jawab wilayah, penerbitan tagihan (invoice) otomatis, pembayaran termin/kasbon, manajemen arus kas, distribusi logistik/stok barang antar cabang, hingga presensi dan penggajian (payroll) karyawan.
-
-### 🎯 Nilai Bisnis Utama (Business Value):
-1. **Otomatisasi Penagihan & Monitoring Piutang**: Meminimalkan tagihan terlewat dengan modul invoice otomatis, riwayat cicilan kasbon, dan status pembayaran real-time.
-2. **Visibilitas Finansial Multi-Cabang**: Pemisahan data operasional per cabang dengan konsolidasi arus kas terpusat untuk Owner.
-3. **Audit Trail & Keamanan Ketat**: Setiap aksi pengguna, mutasi stok, dan log akses dicatat secara sistematis untuk transparansi data dan akuntabilitas tim.
+[Fitur Utama](#-fitur-utama) • [Rancangan Arsitektur](#-rancangan-arsitektur-sistem) • [Model Relasi Data](#-model-relasi-data-erd) • [Pengujian Pest](#-jaminan-kualitas--pengujian-pest-php) • [Panduan Instalasi](#-panduan-instalasi--menjalankan-aplikasi) • [Akun Demo](#-kredensial-akun-uji-coba)
 
 ---
 
-## 🏗️ Rancangan Arsitektur Sistem (System Architecture & Design)
+</div>
 
-Sistem dibangun dengan pola arsitektur berlapis (*Layered MVC*) yang menjamin skalabilitas, keterbacaan kode (*clean code*), dan kemudahan pengujian.
+## 📌 Mengapa PT Buana NetCore System?
 
-```
-+-------------------------------------------------------------------------------+
-|                             PRESENTATION LAYER                                |
-|   Blade Templates  •  Tailwind CSS v4  •  Flowbite UI  •  Vite Asset Bundler  |
-+-------------------------------------------------------------------------------+
-                                      │
-                                      ▼
-+-------------------------------------------------------------------------------+
-|                         SECURITY & MIDDLEWARE LAYER                           |
-|  SecurityHeaders (CSP, X-Frame) • CheckRole (RBAC) • ThrottleRequests • Logs  |
-+-------------------------------------------------------------------------------+
-                                      │
-                                      ▼
-+-------------------------------------------------------------------------------+
-|                             APPLICATION LAYER                                 |
-|  Controllers (Pelanggan, Invoice, Kas, Produk, Absensi, SlipGaji, Backup, dll)|
-+-------------------------------------------------------------------------------+
-                                      │
-                                      ▼
-+-------------------------------------------------------------------------------+
-|                              DOMAIN & DATA LAYER                              |
-|   Eloquent ORM  •  Model Relationships  •  Event Observers  •  Query Scopes   |
-+-------------------------------------------------------------------------------+
-                                      │
-                                      ▼
-+-------------------------------------------------------------------------------+
-|                            INFRASTRUCTURE LAYER                               |
-|   SQLite (Local / Testing)  •  MySQL 8.0 (Production)  •  Nginx  •  Docker    |
-+-------------------------------------------------------------------------------+
-```
+Pengelolaan operasional ISP dan jaringan RT/RW Net sering menghadapi tantangan krusial:
+* **Kebocoran Piutang**: Sulit memantau pelanggan yang membayar separuh (kasbon/cicilan) vs lunas.
+* **Kompleksitas Multi-Cabang**: Data antar cabang tercampur, stok perangkat teknisi (ONT/Router) rawan hilang saat mutasi.
+* **Kepatuhan Pajak**: Perhitungan regulasi kominfo (Pajak PPN 11% & BHP-USO) kerap dilakukan manual dan rentan salah hitung.
+* **Beban Administrasi**: Presensi kehadiran teknisi dan kalkulasi slip gaji memakan waktu berhari-hari.
 
-### 🔄 Alur Proses Bisnis Utama (Business Workflow)
+> [!NOTE]
+> **NetCore PT Buana** memadukan seluruh alur kerja ini ke dalam satu platform tersentralisasi: dari *lifecycle* pelanggan, siklus penagihan otomatis, pencatatan kas mutasi real-time, kontrol stok antar gudang cabang, hingga absensi & penggajian karyawan.
+
+---
+
+## 🏛️ Rancangan Arsitektur Sistem
+
+Sistem dirancang mengadopsi standar **Clean Layered Architecture (MVC)** di atas ekosistem Laravel 13, memastikan performa tinggi, modularitas, dan kepatuhan terhadap prinsip *Separation of Concerns*.
+
+### 1. Arsitektur Berlapis (Layered High-Level Architecture)
 
 ```
-[ Registrasi Pelanggan ] ──► [ Pilih Paket & Wilayah PJ ] ──► [ Generate Invoice ]
-                                                                       │
-           ┌───────────────────────────────────────────────────────────┴────────────────────────┐
-           ▼                                                                                    ▼
-    [ Bayar Lunas ]                                                                    [ Cicilan / Kasbon ]
-           │                                                                                    │
-           ▼                                                                                    ▼
-[ Kas Masuk Otomatis ] ◄─────────────────────────────────────────────────────────────── [ Sisa Piutang ]
-           │
-           ▼
-[ Laporan Keuangan, Arus Kas & Dashboard Pajak PPN/BHP-USO ]
+┌────────────────────────────────────────────────────────────────────────┐
+│                        1. PRESENTATION LAYER                           │
+│  • Responsive UI (Blade + Tailwind CSS v4 + Flowbite)                  │
+│  • Dynamic Component Modals & Reactive Filter Tables                   │
+│  • PDF Export Generator (DomPDF Engine)                                │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ HTTP Requests
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                     2. SECURITY & MIDDLEWARE LAYER                     │
+│  • SecurityHeaders (Strict-Transport-Security, X-Frame-Options, CSP)   │
+│  • Role-Based Access Control (RBAC via CheckRole: Owner, Pegawai, Cabang)│
+│  • Login Anti-Brute Force Rate Limiting (ThrottleRequests 10 req/min)  │
+│  • Request Audit Logger (LogRequest → LogAktivitas)                    │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ Sanitized Request
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                       3. CONTROLLER & BUSINESS LOGIC                   │
+│  • Customer & Billing Engine (Pelanggan, Invoice, Kasbon, Tagihan)     │
+│  • Finance & Cashflow Handler (Kas, Saldo Berjalan, Biaya Operasional) │
+│  • Inventory & Branch Controller (Stok Gudang, Transfer Cabang)        │
+│  • HR & Payroll Dispatcher (Absensi, Slip Gaji Kalkulator)             │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ ORM Interactions
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                         4. DOMAIN & DATA LAYER                         │
+│  • Eloquent ORM Models & Relationships                                 │
+│  • Database Migration Engine (44 Migrations, Fully Dual-Compatible)   │
+│  • SQLite & MySQL Abstraction (Driver-level function mapping)          │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ Query Execution
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                      5. INFRASTRUCTURE & PERSISTENCE                   │
+│  • Development & CI/CD: In-Memory SQLite (Lightning Fast)              │
+│  • Production: Dockerized MySQL 8.0 Engine + Nginx Alpine Proxy       │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 💎 Fitur Unggulan Sistem (Key Features)
+### 2. Alur Transaksi & Billing (Transaction Lifecycle)
 
-### 1. 👥 Manajemen Pelanggan Berbasis Segmen
-* Pengelompokan tipe pelanggan: **Individu**, **Instansi**, dan **Mitra**.
-* Pemetaan paket internet (kecepatan & harga) serta penanggung jawab (PJ) teknis wilayah.
-* Kontrol status koneksi (*Aktif / Nonaktif*) dengan penandaan tanggal pemutusan.
-
-### 2. 🧾 Billing, Invoice & Manajemen Piutang (Kasbon)
-* Pembuatan tagihan internet bulanan maupun penjualan perangkat (ONT, Router, Kabel).
-* Dukungan sistem pembayaran penuh (*Lunas*) atau parsial (*Kasbon/Cicilan*).
-* Ekspor dan cetak nota / kwitansi resmi dalam format **PDF**.
-
-### 3. 💰 Manajemen Kas & Arus Kas Real-Time
-* Buku kas terintegrasi: pencatatan kas masuk otomatis dari pembayaran invoice dan kas keluar dari pembelian stok barang.
-* Fitur **Rekalkulasi Saldo Berjalan** otomatis untuk memastikan integritas buku kas.
-* Manajemen biaya operasional (upstream ISP, sewa tiang, utilitas kantor).
-
-### 4. 📦 Logistik, Inventaris Produk & Mutasi Cabang
-* Inventaris perangkat jaringan dengan peringatan otomatis stok menipis (*Alert*).
-* Fitur transfer stok barang dari kantor pusat ke cabang tertentu.
-* Riwayat kartu stok (*Stock Card Log*) yang mencatat setiap barang masuk, pindah, atau dipakai.
-
-### 5. 🏢 Multi-Cabang & Hak Akses Berjenjang (Role-Based Access Control)
-* **Owner (Pemilik)**: Akses tanpa batas ke seluruh modul, dashboard performa, pengaturan pajak, manajemen user akun, dan backup database.
-* **Pegawai (Kantor Pusat)**: Operasional kasir, penerbitan invoice, entri pelanggan baru, dan pengajuan kas.
-* **Cabang**: Dashboard independen cabang, laporan stok cabang, dan pemakaian unit perangkat.
-
-### 6. 🕒 SDM, Presensi Harian & Payroll (Slip Gaji)
-* Absensi digital harian: pencatatan kehadiran (*Datang*, *Terlambat*, *Lembur*, *Pulang*).
-* Generator Slip Gaji otomatis berdasarkan kehadiran dan komponen potongan/tunjangan.
-* Cetak dokumen slip gaji resmi berformat **PDF**.
-
-### 7. 🛡️ Keamanan & Kepatuhan Data (Enterprise Security)
-* Proteksi brute-force login via **Rate Limiting**.
-* Header keamanan respons HTTP (*Content-Type-Options*, *Frame-Options*, *XSS Protection*, *Referrer-Policy*).
-* Audit Trail otomatis: pencatatan riwayat setiap aksi *create*, *update*, dan *delete* data pengguna.
-* Pencadangan basis data (*Backup Database*) terjadwal dengan retensi otomatis.
+```
+   ┌────────────────────┐
+   │ REGISTRASI PELANGGAN │ ── Tipe: Individu / Instansi / Mitra
+   └─────────┬──────────┘
+             │
+             ▼
+   ┌────────────────────┐
+   │ PENETAPAN PAKET & PJ │ ── Paket Kecepatan (Mbps) + Penanggung Jawab Wilayah
+   └─────────┬──────────┘
+             │
+             ▼
+   ┌────────────────────┐
+   │ GENERATE INVOICE   │ ── Tagihan Bulanan / Pembelian Perangkat
+   └─────────┬──────────┘
+             │
+     ┌───────┴────────┬──────────────────────────┐
+     │ Status         │ Status                   │
+     ▼                ▼                          ▼
+┌─────────┐      ┌─────────┐                ┌─────────┐
+│  LUNAS  │      │ CICILAN │                │ KASBON  │
+└────┬────┘      └────┬────┘                └────┬────┘
+     │                │ Sisa Tercatat            │ Piutang Terbuka
+     └────────┬───────┴──────────────────────────┘
+              ▼
+   ┌────────────────────┐
+   │ BUKU KAS OTOMATIS  │ ── Uang Masuk Bertambah, Saldo Berjalan Direkalkulasi
+   └─────────┬──────────┘
+             │
+             ▼
+   ┌────────────────────┐
+   │ LAPORAN & PAJAK    │ ── Cetak Nota PDF & Laporan PPN 11% / BHP-USO
+   └────────────────────┘
+```
 
 ---
 
-## 🧪 Jaminan Kualitas & Pengujian (Pest PHP Test Suite)
+## ✨ Fitur Utama
 
-Proyek ini menerapkan metodologi *Test-Driven Quality Assurance* menggunakan **Pest PHP v4** dengan **33 skenario pengujian komprehensif** dan **68 assertions** yang menguji seluruh endpoint dan *business logic*.
+| Modul | Kemampuan & Manfaat Bisnis |
+|---|---|
+| **👥 Manajemen Pelanggan** | Profiling lengkap pelanggan (Individu, Instansi, Mitra), alokasi IP Address, koordinat Google Maps/GPS, integrasi Paket WiFi & PJ, tombol cepat switch status On/Off. |
+| **🧾 Billing & Invoice** | Invoice otomatis & ad-hoc, multi-item perangkat (modem, kabel, konektor), deteksi status pembayaran (Lunas, Cicilan, Kasbon), download & cetak PDF invoice resmi. |
+| **💰 Kas & Keuangan Terintegrasi** | Pencatatan arus kas otomatis saat invoice terbayar atau pembelian stok, fitur **Rekalkulasi Saldo Berjalan**, alokasi biaya operasional kantor & bandwidth upstream. |
+| **🏢 Multi-Cabang & Inventaris** | Isolasi hak akses data per cabang. Modul inventaris gudang pusat dengan mutasi barang ke cabang dan kartu stok (*LogStok*) otomatis. |
+| **👥 HR, Absensi & Slip Gaji** | Absensi harian karyawan (status Datang, Terlambat, Lembur, Pulang). Pembuatan slip gaji otomatis dengan perhitungan gaji pokok, tunjangan, dan cetak PDF. |
+| **📡 Repeater & Pajak Regulasi** | Manajemen titik sewa repeater pemancar WiFi, kalkulasi pajak pendapatan jasa internet: PPN (11%) dan tarif kontribusi BHP-USO Kominfo. |
+| **🛡️ Keamanan & Audit Trail** | Pencatatan otomatis setiap request dan manipulasi data (*LogAktivitas*), proteksi rate limiter pada login, CSRF tokens, dan sanitasi header respons. |
+| **💾 Backup & Recovery** | Modul pencadangan database mandiri melalui UI web atau CLI artisan, notifikasi status via email, serta manajemen retensi cadangan. |
 
-```text
-   PASS  Tests\Unit\ExampleTest
-   PASS  Tests\Feature\AuthTest
-   PASS  Tests\Feature\DashboardTest
-   PASS  Tests\Feature\ExampleTest
-   PASS  Tests\Feature\InvoiceKasbonTest
-   PASS  Tests\Feature\KasBiayaTest
-   PASS  Tests\Feature\LaporanAbsensiGajiTest
-   PASS  Tests\Feature\PelangganTest
-   PASS  Tests\Feature\PengaturanCabangTest
-   PASS  Tests\Feature\ProdukTest
+---
 
-  Tests:    33 passed (68 assertions)
-  Duration: 1.22s
+## 🗄️ Model Relasi Data (ERD Summary)
+
+```
+[ Cabang ] ────────────1:N────────────► [ User ] (Owner, Pegawai, Cabang)
+   │
+   └───────────────────1:N────────────► [ ProdukCabang ] ◄──N:1── [ Produk ]
+                                                                      │
+                                                                     1:N
+                                                                      ▼
+[ PaketWifi ] ─────────1:N─────────┐                             [ LogStok ]
+                                   ▼
+[ PenanggungJawabWifi ] 1:N───► [ Pelanggan ]
+                                   │
+                                  1:N
+                                   ▼
+                               [ Invoice ] ──1:N──► [ InvoiceDetail ]
+                                   │
+                                  1:N
+                                   ▼
+[ Kas (Saldo Berjalan) ] ◄── [ Pembayaran ]
 ```
 
-Untuk menjalankan unit & feature test:
+---
+
+## 🧪 Jaminan Kualitas & Pengujian (Pest PHP)
+
+Proyek ini telah diverifikasi penuh menggunakan framework pengujian modern **Pest PHP v4.6** dengan **33 automated tests** dan **68 assertions**. Seluruh pengujian berjalan pada database *in-memory* yang terisolasi, memastikan zero side-effects.
+
+> [!TIP]
+> **Status Pengujian:** `33 PASSED (100%)` | Durasi: `~1.2 detik`
+
 ```bash
+# Menjalankan seluruh test suite Pest
 ./vendor/bin/pest
-# atau via composer
+
+# Atau menggunakan shortcut Composer
 composer test
 ```
 
-Untuk memastikan standarisasi gaya penulisan kode (*Clean Code* / PSR-12):
+### Cakupan Test Suite:
+- **`AuthTest`**: Validasi login, pengujian brute-force, redirect guest, dan invalidasi sesi saat logout.
+- **`DashboardTest`**: Otorisasi dashboard berbasis peran (Owner vs Pegawai) dan endpoint agregasi pajak.
+- **`PelangganTest`**: Validasi CRUD pelanggan, pemisahan tab segmen, dan toggle status aktif/nonaktif.
+- **`ProdukTest`**: Inventaris produk, endpoint pagination AJAX JSON, dan validasi mutasi restok.
+- **`InvoiceKasbonTest`**: Siklus pembuatan invoice, validasi kalkulasi subtotal, dan tracking kasbon.
+- **`KasBiayaTest`**: Integritas mutasi kas, rekalkulasi saldo akhir matematis, dan biaya operasional.
+- **`LaporanAbsensiGajiTest`**: Penarikan laporan analitik, form absensi teknisi, dan generator slip gaji.
+- **`PengaturanCabangTest`**: Akses konfigurasi perusahaan, master data paket, PJ, dan akun pengguna.
+
+---
+
+## 🎨 Standarisasi Clean Code (Laravel Pint)
+
+Kode ditulis mematuhi konvensi resmi **PSR-12** dan standar *idiomatic Laravel* menggunakan tool **Laravel Pint**.
+
 ```bash
+# Memeriksa kepatuhan format kode
 ./vendor/bin/pint --test
+# Status: {"tool":"pint","result":"passed"}
 ```
 
 ---
 
-## 🔑 Kredensial Akun untuk Uji Coba (Demo Credentials)
+## 🔐 Kredensial Akun Uji Coba
 
-Database lokal telah terisi data dummy lengkap (>1.000 pelanggan, >2.000 riwayat transaksi). Gunakan akun-akun berikut untuk menguji hak akses setiap peran:
+Database demo telah terisi data uji coba (*1.000+ pelanggan dummy, 2.000+ riwayat transaksi, produk, dan log absensi*). Gunakan akun di bawah ini untuk menguji setiap level hak akses:
 
-| Peran (Role) | Username | Password | Deskripsi Akses |
+| Role | Username | Password | Deskripsi Hak Akses & Pengujian |
 |---|---|---|---|
-| **Owner (Utama)** | `uroo` | `uroo1234` | Akses penuh seluruh sistem, pajak, laporan laba rugi, akun & backup |
-| **Owner (Admin)** | `owner` | `password` | Akun owner sekunder dengan hak akses setara |
-| **Pegawai (Pusat)** | `pegawai` | `password` | Operasional input pelanggan, invoice, kas, kasir, dan absensi |
-| **Pegawai (Cabang)** | `cabang` | `password` | Dashboard cabang Bandung, cek stok cabang & pemakaian unit |
+| 👑 **Owner (Utama)** | `uroo` | `uroo1234` | **Super Admin**: Akses mutlak ke semua cabang, dashboard pajak, audit log, backup, dan manajemen akun. |
+| 🛡️ **Owner (Admin)** | `owner` | `password` | **Owner Sekunder**: Hak akses penuh setara untuk pengujian redundansi. |
+| 💼 **Pegawai (Pusat)** | `pegawai` | `password` | **Staff Operasional**: Entri pelanggan baru, pembuatan tagihan invoice, kasir kas, dan absensi harian. |
+| 🏢 **Pegawai (Cabang)** | `cabang` | `password` | **Staff Cabang Bandung**: Tampilan terisolasi dashboard cabang, input pemakaian stok unit cabang. |
 
 ---
 
-## 💻 Panduan Instalasi Lokal (Local Setup)
+## 🚀 Panduan Instalasi & Menjalankan Aplikasi
 
-### Prasyarat:
-- PHP >= 8.3 (`pdo_sqlite`, `pdo_mysql`, `mbstring`, `bcmath`, `gd`, `zip`, `xml`)
-- Composer >= 2.0
-- Node.js >= 18.x & npm
-
-### Langkah Instalasi:
+### Opsi A: Menjalankan di Lingkungan Lokal (Recommended)
 
 1. **Clone Repository:**
    ```bash
-   git clone https://github.com/uroo-dev/netcore-isp-PT_Buana.git
+   git clone git@github.com:uroo-dev/netcore-isp-PT_Buana.git
    cd netcore-isp-PT_Buana
    ```
 
-2. **Setup Konfigurasi Environment:**
+2. **Salin Environment File:**
    ```bash
    cp .env.example .env
    ```
 
-3. **Install Dependensi Backend & Frontend:**
+3. **Install Dependensi:**
    ```bash
    composer install --ignore-platform-req=php
    npm install
    ```
 
-4. **Generate Key & Storage Link:**
+4. **Inisialisasi Aplikasi & Database:**
    ```bash
    php artisan key:generate
    php artisan storage:link
-   ```
-
-5. **Migrasi & Seeding Data:**
-   ```bash
    php artisan migrate:fresh --seed
    ```
 
-6. **Kompilasi Aset Frontend:**
+5. **Kompilasi Frontend & Jalankan Server:**
    ```bash
    npm run build
-   ```
-
-7. **Jalankan Aplikasi:**
-   ```bash
    php artisan serve
    ```
-   Buka peramban di: **http://127.0.0.1:8000**
+   Akses aplikasi di: **http://127.0.0.1:8000**
 
 ---
 
-## 🐳 Deployment via Docker Compose
+### Opsi B: Menjalankan via Docker Compose
 
-Untuk menjalankan aplikasi dalam lingkungan kontainer terisolasi dengan **MySQL 8.0** dan **Nginx**:
+> [!IMPORTANT]
+> Konfigurasi Docker telah mencakup kontainer **PHP 8.3 FPM**, server web **Nginx Alpine**, dan basis data **MySQL 8.0**.
 
-1. Salin konfigurasi environment docker:
-   ```bash
-   cp .env.docker .env
-   ```
-2. Jalankan docker compose:
-   ```bash
-   docker compose up -d --build
-   ```
-3. Akses aplikasi di: **http://localhost:8080**
+```bash
+# 1. Siapkan file environment docker
+cp .env.docker .env
+
+# 2. Build dan jalankan seluruh container di background
+docker compose up -d --build
+
+# 3. Jalankan migrasi dan data seeder di dalam container
+docker compose exec app php artisan migrate:fresh --seed
+```
+Buka browser dan akses melalui: **http://localhost:8080**
 
 ---
 
-## 📂 Struktur Direktori Proyek
+## 🛠️ Perintah Artisan Tambahan (Custom Commands)
+
+Sistem dilengkapi beberapa artisan command bawaan untuk otomasi latar belakang:
+
+```bash
+# Notifikasi jatuh tempo invoice via WhatsApp (H-7 dan H-3)
+php artisan invoice:notify-due
+
+# Menjalankan backup database dan mencatat histori backup
+php artisan backup:database
+
+# Rekalkulasi dan perbaikan data kas jika ada anomali saldo
+php artisan kas:perbaiki
+
+# Generate data uji tambahan untuk pengujian pagination & filter kas
+php artisan kas:seed-test
+```
+
+---
+
+## 📁 Struktur Direktori Utama
 
 ```
-BuanaNetSystem/
+netcore-isp-PT_Buana/
 ├── app/
+│   ├── Console/Commands/       # Custom artisan tools (Backup, Notifikasi WA, Kas)
 │   ├── Http/
-│   │   ├── Controllers/     # Controller per modul (Pelanggan, Invoice, Kas, dll)
-│   │   └── Middleware/      # CheckRole, SecurityHeaders, LogRequest
-│   ├── Models/              # Eloquent Models & Relasi Database
-│   └── Providers/           # AppServiceProvider & SQLite Function Resolvers
+│   │   ├── Controllers/        # Controllers logika bisnis per modul
+│   │   └── Middleware/         # CheckRole, SecurityHeaders, LogRequest
+│   ├── Models/                 # Eloquent entities & relationships
+│   └── Providers/              # AppServiceProvider (SQLite driver abstractions)
 ├── database/
-│   ├── migrations/          # 44 skrip migrasi terstruktur
-│   └── seeders/             # DatabaseSeeder & TestDataSeeder
+│   ├── migrations/             # 44 file migrasi skema tabel
+│   └── seeders/                # DatabaseSeeder & TestDataSeeder
 ├── docker/
-│   └── nginx/               # Konfigurasi reverse proxy Nginx
+│   └── nginx/                  # Konfigurasi reverse proxy Nginx
 ├── resources/
-│   ├── views/               # Blade Templates UI terpadu
-│   └── css/                 # Styling Tailwind CSS
+│   ├── views/                  # Blade templates (Dashboard, Kas, Pelanggan, dll)
+│   └── css/                    # Tailwind CSS v4 styling
 ├── routes/
-│   ├── web.php              # Definisi rute & pengelompokan hak akses (RBAC)
-│   └── console.php          # Scheduled background tasks
+│   ├── web.php                 # Rute web & proteksi RBAC
+│   └── console.php             # Scheduled task cron definitions
 ├── tests/
-│   ├── Feature/             # 33 Pest Feature Tests
-│   └── Pest.php             # Pest configuration & testing helpers
-├── docker-compose.yml       # Orkestrasi Docker (App, Nginx, MySQL)
-├── Dockerfile               # Kontainer PHP 8.3 FPM
-└── README.md                # Dokumentasi Resmi Proyek
+│   ├── Feature/                # Skenario pengujian Pest PHP per fitur
+│   └── Pest.php                # Testing helpers & test case binding
+├── docker-compose.yml          # Konfigurasi multi-container Docker
+├── Dockerfile                  # Base image PHP 8.3 FPM Alpine
+└── README.md                   # Dokumentasi resmi proyek
 ```
 
 ---
 
-<p align="center">
-  Didesain dan dikembangkan dengan standar rekayasa perangkat lunak modern oleh <strong><a href="https://github.com/uroo-dev">Uroo.dev</a></strong>.
-</p>
+<div align="center">
+
+Dibuat dengan dedikasi tinggi terhadap kualitas kode oleh **[Uroo.dev](https://github.com/uroo-dev)**.  
+Lisensi open-source di bawah **[MIT License](LICENSE)**.
+
+</div>
