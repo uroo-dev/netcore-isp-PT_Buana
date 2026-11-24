@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stok Produk • NetFlow WiFi</title>
+  <!-- Tailwind + Flowbite + BoxIcons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* tidak ada style tambahan – hanya tailwind & library */
+  </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+  <!-- Layout wrapper -->
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR (biru dominan + aksen kuning) -->
+    <aside class="w-72 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl">
+      <!-- Brand -->
+      <div class="flex items-center gap-3 px-5 py-6 border-b border-blue-700/60">
+        <div class="rounded-xl shadow-md">
+          <img src="./images/logo-buana.png" alt="Logo Buana" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Buana<span class="text-yellow-300">Net</span></h1>
+          <p class="text-xs text-blue-200 -mt-1">Admin Console</p>
+        </div>
+      </div>
+
+      <!-- User profile ringkas -->
+      <div class="px-5 py-4 flex items-center gap-3 border-b border-blue-700/40">
+        <img class="w-10 h-10 rounded-full ring-2 ring-yellow-300 object-cover"
+          src="https://ui-avatars.com/api/?name=Admin+WiFi&background=fbbf24&color=1e3a8a&bold=true" alt="admin">
+        <div class="text-sm">
+          <p class="font-semibold">Ardi Network</p>
+          <p class="text-blue-200 text-xs flex items-center gap-1"><i
+              class='bx bx-badge-check text-yellow-300'></i>Super Admin</p>
+        </div>
+      </div>
+
+      <!-- NAVIGASI -->
+      <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <!-- Dashboard -->
+        <a href="dashboard.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-dashboard text-xl'></i>
+          <span class="font-medium">Dashboard</span>
+        </a>
+        <!-- Customer -->
+        <a href="pelanggan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-user-detail text-xl'></i>
+          <span class="font-medium">Customer</span>
+        </a>
+        <!-- Produk -->
+        <a href="produk.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-blue-700/70 shadow-md transition-all">
+          <i class='bx bxs-box text-xl text-yellow-300'></i>
+          <span class="font-medium">Stok Produk</span>
+        </a>
+        <!-- Tagihan -->
+        <a href="tagihan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-receipt text-xl'></i>
+          <span class="font-medium">Tagihan</span>
+        </a>
+        <!-- Saldo -->
+        <a href="saldo.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-wallet text-xl'></i>
+          <span class="font-medium">Saldo</span>
+        </a>
+        <!-- Laporan -->
+        <a href="laporan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-bar-chart-square text-xl'></i>
+          <span class="font-medium">Laporan</span>
+        </a>
+
+        <!-- Divider -->
+        <div class="pt-6 mt-4 border-t border-blue-700/40"></div>
+
+        <!-- Pengaturan -->
+        <a href="pengaturan.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bx-cog'></i>
+          <span>Pengaturan</span>
+        </a>
+        <a href="#"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bx-support'></i>
+          <span>Bantuan</span>
+        </a>
+      </nav>
+
+      <!-- Footer sidebar -->
+      <div class="p-4 border-t border-blue-700/40">
+        <div class="bg-blue-950/40 p-3 rounded-xl text-xs text-blue-200 flex items-center gap-2">
+          <i class='bx bx-server text-yellow-300 text-lg'></i>
+          <span>Gateway • Online <span class="inline-block w-2 h-2 bg-green-400 rounded-full ml-1"></span></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <!-- Top navbar (header) -->
+      <header class="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <button class="text-gray-500 hover:text-blue-700 lg:hidden">
+            <i class='bx bx-menu text-2xl'></i>
+          </button>
+          <h2 class="text-2xl font-bold text-gray-800">Stok Produk <span class="text-blue-600 text-base font-normal ml-2">| Barang & Jasa</span></h2>
+        </div>
+        <div class="flex items-center gap-4">
+          <!-- notifikasi -->
+          <button class="relative p-2 text-gray-500 hover:text-blue-700 bg-gray-100 rounded-full">
+            <i class='bx bx-bell text-xl'></i>
+            <span class="absolute top-0 right-0 w-4 h-4 bg-yellow-400 text-blue-900 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+          </button>
+          <!-- Tambah Produk -->
+          <button data-modal-target="produkModal" data-modal-toggle="produkModal"
+            class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow transition">
+            <i class='bx bx-plus-circle'></i> <span>Tambah Produk</span>
+          </button>
+          <!-- user avatar -->
+          <img class="w-9 h-9 rounded-full ring-2 ring-blue-200"
+            src="https://ui-avatars.com/api/?name=Ardi+N&background=1e3a8a&color=fbbf24&bold=true" alt="user">
+        </div>
+      </header>
+
+      <!-- Produk content -->
+      <div class="p-6 space-y-6">
+        <!-- Filter & Search -->
+        <div class="bg-white rounded-2xl shadow-md p-5 border border-gray-100">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Cari Produk</label>
+              <input type="text" id="searchInput" placeholder="Nama produk..."
+                class="w-full border border-gray-300 rounded-xl p-2.5 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Filter Tipe</label>
+              <select id="filterTipe" class="w-full border border-gray-300 rounded-xl p-2.5 focus:ring-blue-500">
+                <option value="">Semua Tipe</option>
+                <option value="barang">Barang</option>
+                <option value="jasa">Jasa</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Filter Status</label>
+              <select id="filterStatus" class="w-full border border-gray-300 rounded-xl p-2.5 focus:ring-blue-500">
+                <option value="">Semua Status</option>
+                <option value="aktif">Aktif</option>
+                <option value="nonaktif">Nonaktif</option>
+              </select>
+            </div>
+            <div class="flex items-end">
+              <button onclick="filterData()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 transition w-full justify-center">
+                <i class='bx bx-filter-alt'></i> Terapkan Filter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabel Produk -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+          <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+            <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2">
+              <i class='bx bx-box text-blue-600 text-xl'></i> Daftar Produk
+            </h3>
+            <span class="text-sm text-gray-500" id="totalRecords">Total: 0 produk</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 text-gray-600 border-b">
+                <tr>
+                  <th class="px-4 py-3 text-left font-semibold">Tipe</th>
+                  <th class="px-4 py-3 text-left font-semibold">Nama Produk</th>
+                  <th class="px-4 py-3 text-left font-semibold">Satuan</th>
+                  <th class="px-4 py-3 text-right font-semibold">Harga Beli</th>
+                  <th class="px-4 py-3 text-right font-semibold">Harga Jual</th>
+                  <th class="px-4 py-3 text-center font-semibold">Stok Min</th>
+                  <th class="px-4 py-3 text-center font-semibold">Status</th>
+                  <th class="px-4 py-3 text-center font-semibold">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="produkTableBody" class="divide-y">
+                <!-- Data will be rendered here -->
+              </tbody>
+            </table>
+          </div>
+          <div id="emptyState" class="text-center py-12 hidden">
+            <i class='bx bx-box text-6xl text-gray-300'></i>
+            <p class="text-gray-500 mt-3">Tidak ada produk ditemukan</p>
+            <button data-modal-target="produkModal" data-modal-toggle="produkModal"
+              class="mt-3 text-blue-600 hover:text-blue-800 text-sm font-medium">
+              + Tambah Produk Baru
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== MODAL FORM PRODUK ========= -->
+  <div id="produkModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="relative bg-white rounded-2xl shadow">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+          <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-2" id="modalTitle">
+            <i class='bx bx-plus-circle text-yellow-400'></i>Tambah Produk
+          </h3>
+          <button type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+            data-modal-hide="produkModal">
+            <i class='bx bx-x text-xl'></i>
+          </button>
+        </div>
+        <!-- Modal Body -->
+        <form id="produkForm" onsubmit="saveProduk(event)">
+          <input type="hidden" id="produkId">
+          <div class="p-4 md:p-5 space-y-4 max-h-[60vh] overflow-y-auto">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Produk <span class="text-red-500">*</span></label>
+                <select id="tipeProduk" required class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+                  <option value="">Pilih Tipe</option>
+                  <option value="barang">Barang</option>
+                  <option value="jasa">Jasa</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status <span class="text-red-500">*</span></label>
+                <select id="statusProduk" required class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+                  <option value="aktif">Aktif</option>
+                  <option value="nonaktif">Nonaktif</option>
+                </select>
+              </div>
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk <span class="text-red-500">*</span></label>
+                <input type="text" id="namaProduk" required placeholder="Masukkan nama produk"
+                  class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Satuan <span class="text-red-500">*</span></label>
+                <select id="satuanProduk" required class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+                  <option value="pcs">Pcs</option>
+                  <option value="unit">Unit</option>
+                  <option value="box">Box</option>
+                  <option value="roll">Roll</option>
+                  <option value="meter">Meter</option>
+                  <option value="paket">Paket</option>
+                  <option value="layanan">Layanan</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Stok Minimum</label>
+                <input type="number" id="stokMinimum" value="5" min="1"
+                  class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Harga Beli (Rp)</label>
+                <input type="number" id="hargaBeli" placeholder="0" min="0"
+                  class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Harga Jual (Rp) <span class="text-red-500">*</span></label>
+                <input type="number" id="hargaJual" required placeholder="0" min="1"
+                  class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500">
+              </div>
+              <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                <textarea id="deskripsiProduk" rows="3" placeholder="Deskripsi produk (opsional)"
+                  class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-blue-500"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- Modal Footer -->
+          <div class="flex items-center justify-end gap-3 p-4 md:p-5 border-t border-gray-200 rounded-b">
+            <button type="button" data-modal-hide="produkModal"
+              class="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">
+              Batal
+            </button>
+            <button type="submit"
+              class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              <i class='bx bx-save mr-1'></i> Simpan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL DETAIL PRODUK ========= -->
+  <div id="detailModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-lg max-h-full">
+      <div class="relative bg-white rounded-2xl shadow">
+        <div class="flex items-center justify-between p-4 border-b">
+          <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+            <i class='bx bx-detail text-blue-600'></i> Detail Produk
+          </h3>
+          <button type="button" class="text-gray-400 hover:bg-gray-100 rounded-lg p-1" data-modal-hide="detailModal">
+            <i class='bx bx-x text-xl'></i>
+          </button>
+        </div>
+        <div class="p-5" id="detailContent">
+          <!-- Content will be rendered here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- flowbite js -->
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+
+  <script>
+    // ========== DATA PRODUK (Simulasi Database) ==========
+    let produkData = [
+      { id: 1, tipe: 'barang', nama: 'Router WiFi 6', satuan: 'unit', harga_beli: 650000, harga_jual: 850000, stok_minimum: 5, deskripsi: 'Router WiFi 6 Dual Band', status: 'aktif' },
+      { id: 2, tipe: 'barang', nama: 'Kabel UTP 20m', satuan: 'roll', harga_beli: 55000, harga_jual: 75000, stok_minimum: 10, deskripsi: 'Kabel UTP Cat6 20 meter', status: 'aktif' },
+      { id: 3, tipe: 'jasa', nama: 'Biaya Instalasi', satuan: 'layanan', harga_beli: null, harga_jual: 300000, stok_minimum: 0, deskripsi: 'Jasa pemasangan WiFi', status: 'aktif' },
+      { id: 4, tipe: 'barang', nama: 'Access Point', satuan: 'unit', harga_beli: 450000, harga_jual: 650000, stok_minimum: 3, deskripsi: 'Access Point Indoor', status: 'aktif' },
+      { id: 5, tipe: 'jasa', nama: 'Maintenance Bulanan', satuan: 'layanan', harga_beli: null, harga_jual: 150000, stok_minimum: 0, deskripsi: 'Perawatan rutin perangkat', status: 'nonaktif' },
+      { id: 6, tipe: 'barang', nama: 'Switch 8 Port', satuan: 'unit', harga_beli: 350000, harga_jual: 500000, stok_minimum: 5, deskripsi: 'Switch Gigabit 8 Port', status: 'aktif' },
+    ];
+
+    let nextId = 7;
+    let isEdit = false;
+
+    // ========== RENDER TABLE ==========
+    function renderTable() {
+      const tbody = document.getElementById('produkTableBody');
+      const emptyState = document.getElementById('emptyState');
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const filterTipe = document.getElementById('filterTipe').value;
+      const filterStatus = document.getElementById('filterStatus').value;
+
+      let filteredData = produkData.filter(item => {
+        let matchSearch = item.nama.toLowerCase().includes(searchValue) ||
+                         (item.deskripsi && item.deskripsi.toLowerCase().includes(searchValue));
+        let matchTipe = !filterTipe || item.tipe === filterTipe;
+        let matchStatus = !filterStatus || item.status === filterStatus;
+        return matchSearch && matchTipe && matchStatus;
+      });
+
+      document.getElementById('totalRecords').innerText = `Total: ${filteredData.length} produk`;
+
+      if (filteredData.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        tbody.innerHTML = filteredData.map(item => {
+          const tipeBadge = item.tipe === 'barang'
+            ? '<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">Barang</span>'
+            : '<span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs font-medium">Jasa</span>';
+
+          const statusBadge = item.status === 'aktif'
+            ? '<span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">Aktif</span>'
+            : '<span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium">Nonaktif</span>';
+
+          const hargaBeli = item.harga_beli ? 'Rp ' + item.harga_beli.toLocaleString('id') : '-';
+          const hargaJual = 'Rp ' + item.harga_jual.toLocaleString('id');
+
+          return `
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-4 py-3">${tipeBadge}</td>
+              <td class="px-4 py-3 font-medium">${item.nama}</td>
+              <td class="px-4 py-3">${item.satuan}</td>
+              <td class="px-4 py-3 text-right">${hargaBeli}</td>
+              <td class="px-4 py-3 text-right font-semibold">${hargaJual}</td>
+              <td class="px-4 py-3 text-center">${item.stok_minimum}</td>
+              <td class="px-4 py-3 text-center">${statusBadge}</td>
+              <td class="px-4 py-3 text-center">
+                <div class="flex justify-center gap-2">
+                  <button onclick="editProduk(${item.id})" class="text-blue-600 hover:text-blue-800 transition" title="Edit">
+                    <i class='bx bx-edit text-lg'></i>
+                  </button>
+                  <button onclick="detailProduk(${item.id})" class="text-green-600 hover:text-green-800 transition" title="Detail">
+                    <i class='bx bx-detail text-lg'></i>
+                  </button>
+                  <button onclick="deleteProduk(${item.id})" class="text-red-500 hover:text-red-700 transition" title="Hapus">
+                    <i class='bx bx-trash text-lg'></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    // ========== FILTER ==========
+    function filterData() {
+      renderTable();
+    }
+
+    // Search real-time
+    document.addEventListener('DOMContentLoaded', function() {
+      renderTable();
+      document.getElementById('searchInput').addEventListener('keyup', renderTable);
+    });
+
+    // ========== CRUD FUNCTIONS ==========
+
+    // Reset form
+    function resetForm() {
+      document.getElementById('produkForm').reset();
+      document.getElementById('produkId').value = '';
+      document.getElementById('statusProduk').value = 'aktif';
+      document.getElementById('stokMinimum').value = '5';
+      document.getElementById('modalTitle').innerHTML = '<i class="bx bx-plus-circle text-yellow-400"></i>Tambah Produk';
+      isEdit = false;
+    }
+
+    // Edit produk
+    function editProduk(id) {
+      const produk = produkData.find(p => p.id === id);
+      if (!produk) return;
+
+      isEdit = true;
+      document.getElementById('produkId').value = produk.id;
+      document.getElementById('tipeProduk').value = produk.tipe;
+      document.getElementById('statusProduk').value = produk.status;
+      document.getElementById('namaProduk').value = produk.nama;
+      document.getElementById('satuanProduk').value = produk.satuan;
+      document.getElementById('stokMinimum').value = produk.stok_minimum;
+      document.getElementById('hargaBeli').value = produk.harga_beli || '';
+      document.getElementById('hargaJual').value = produk.harga_jual;
+      document.getElementById('deskripsiProduk').value = produk.deskripsi || '';
+      document.getElementById('modalTitle').innerHTML = '<i class="bx bx-edit text-yellow-400"></i>Edit Produk';
+
+      // Show modal using Flowbite
+      const modal = new Flowbite.Modal(document.getElementById('produkModal'));
+      modal.show();
+    }
+
+    // Detail produk
+    function detailProduk(id) {
+      const produk = produkData.find(p => p.id === id);
+      if (!produk) return;
+
+      const hargaBeli = produk.harga_beli ? 'Rp ' + produk.harga_beli.toLocaleString('id') : '-';
+      const hargaJual = 'Rp ' + produk.harga_jual.toLocaleString('id');
+      const tipeBadge = produk.tipe === 'barang'
+        ? '<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">Barang</span>'
+        : '<span class="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs">Jasa</span>';
+      const statusBadge = produk.status === 'aktif'
+        ? '<span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Aktif</span>'
+        : '<span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">Nonaktif</span>';
+
+      document.getElementById('detailContent').innerHTML = `
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <h4 class="font-bold text-lg">${produk.nama}</h4>
+            ${tipeBadge}
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div><span class="text-gray-500">Satuan:</span> <span class="font-medium">${produk.satuan}</span></div>
+            <div><span class="text-gray-500">Status:</span> ${statusBadge}</div>
+            <div><span class="text-gray-500">Stok Minimum:</span> <span class="font-medium">${produk.stok_minimum}</span></div>
+            <div><span class="text-gray-500">Harga Beli:</span> <span class="font-medium">${hargaBeli}</span></div>
+            <div class="col-span-2"><span class="text-gray-500">Harga Jual:</span> <span class="font-bold text-lg">${hargaJual}</span></div>
+          </div>
+          ${produk.deskripsi ? `<div class="bg-gray-50 p-3 rounded-lg"><span class="text-gray-500">Deskripsi:</span> ${produk.deskripsi}</div>` : ''}
+        </div>
+      `;
+
+      const modal = new Flowbite.Modal(document.getElementById('detailModal'));
+      modal.show();
+    }
+
+    // Save produk
+    function saveProduk(event) {
+      event.preventDefault();
+
+      const tipe = document.getElementById('tipeProduk').value;
+      const nama = document.getElementById('namaProduk').value.trim();
+      const satuan = document.getElementById('satuanProduk').value;
+      const hargaBeli = document.getElementById('hargaBeli').value;
+      const hargaJual = document.getElementById('hargaJual').value;
+      const stokMinimum = document.getElementById('stokMinimum').value;
+      const deskripsi = document.getElementById('deskripsiProduk').value.trim();
+      const status = document.getElementById('statusProduk').value;
+
+      // Validasi
+      if (!tipe) return Swal.fire('Error', 'Pilih tipe produk', 'warning');
+      if (!nama) return Swal.fire('Error', 'Nama produk wajib diisi', 'warning');
+      if (!satuan) return Swal.fire('Error', 'Satuan wajib dipilih', 'warning');
+      if (!hargaJual || parseInt(hargaJual) < 1) return Swal.fire('Error', 'Harga jual minimal Rp 1', 'warning');
+
+      if (isEdit) {
+        // Update
+        const id = parseInt(document.getElementById('produkId').value);
+        const index = produkData.findIndex(p => p.id === id);
+        if (index !== -1) {
+          produkData[index] = {
+            ...produkData[index],
+            tipe, nama, satuan,
+            harga_beli: hargaBeli ? parseFloat(hargaBeli) : null,
+            harga_jual: parseFloat(hargaJual),
+            stok_minimum: parseInt(stokMinimum) || 5,
+            deskripsi: deskripsi || null,
+            status
+          };
+          Swal.fire('Berhasil!', 'Produk berhasil diupdate.', 'success');
+        }
+      } else {
+        // Create
+        produkData.push({
+          id: nextId++,
+          tipe, nama, satuan,
+          harga_beli: hargaBeli ? parseFloat(hargaBeli) : null,
+          harga_jual: parseFloat(hargaJual),
+          stok_minimum: parseInt(stokMinimum) || 5,
+          deskripsi: deskripsi || null,
+          status
+        });
+        Swal.fire('Berhasil!', 'Produk baru berhasil ditambahkan.', 'success');
+      }
+
+      // Hide modal
+      const modal = Flowbite.Modal.getInstance(document.getElementById('produkModal'));
+      modal.hide();
+
+      resetForm();
+      renderTable();
+    }
+
+    // Delete produk
+    function deleteProduk(id) {
+      const produk = produkData.find(p => p.id === id);
+      if (!produk) return;
+
+      Swal.fire({
+        title: 'Hapus Produk?',
+        html: `Anda yakin ingin menghapus <strong>${produk.nama}</strong>?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          produkData = produkData.filter(p => p.id !== id);
+          renderTable();
+          Swal.fire('Terhapus!', 'Produk telah dihapus.', 'success');
+        }
+      });
+    }
+
+    // Reset form saat modal dibuka
+    document.getElementById('produkModal').addEventListener('show.bs.modal', function() {
+      if (!isEdit) {
+        resetForm();
+      }
+    });
+
+    // Sidebar highlight
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('bg-blue-700/70', 'shadow-md'));
+        this.classList.add('bg-blue-700/70', 'shadow-md');
+      });
+    });
+  </script>
+</body>
+</html>

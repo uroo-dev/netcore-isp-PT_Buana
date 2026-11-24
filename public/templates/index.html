@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin • NetFlow WiFi</title>
+  <!-- Tailwind + Flowbite + BoxIcons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* tidak ada style tambahan – hanya tailwind & library */
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans antialiased">
+
+  <!-- Layout wrapper -->
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR (biru dominan + aksen kuning) -->
+    <aside class="w-72 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl">
+      <!-- Brand -->
+      <div class="flex items-center gap-3 px-5 py-6 border-b border-blue-700/60">
+        <div class=" rounded-xl  shadow-md">
+          <img src="./images/logo-buana.png" alt="Logo Buana" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Buana<span class="text-yellow-300">Net</span></h1>
+          <p class="text-xs text-blue-200 -mt-1">Admin Console</p>
+        </div>
+      </div>
+
+      <!-- User profile ringkas -->
+      <div class="px-5 py-4 flex items-center gap-3 border-b border-blue-700/40">
+        <img class="w-10 h-10 rounded-full ring-2 ring-yellow-300 object-cover"
+          src="https://ui-avatars.com/api/?name=Admin+WiFi&background=fbbf24&color=1e3a8a&bold=true" alt="admin">
+        <div class="text-sm">
+          <p class="font-semibold">Ardi Network</p>
+          <p class="text-blue-200 text-xs flex items-center gap-1"><i
+              class='bx bx-badge-check text-yellow-300'></i>Super Admin</p>
+        </div>
+      </div>
+
+      <!-- NAVIGASI (5 menu sesuai permintaan) -->
+      <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <!-- Dashboard -->
+        <a href="dashboard.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-blue-700/70 shadow-md transition-all">
+          <i class='bx bxs-dashboard text-xl text-yellow-300'></i>
+          <span class="font-medium">Dashboard</span>
+          <span class="ml-auto bg-yellow-400 text-blue-900 text-[10px] font-bold px-2 py-0.5 rounded-full">12</span>
+        </a>
+        <!-- Customer -->
+        <a href="pelanggan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-user-detail text-xl'></i>
+          <span class="font-medium">Customer</span>
+        </a>
+        <!-- Tagihan -->
+        <a href="tagihan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-receipt text-xl'></i>
+          <span class="font-medium">Tagihan</span>
+        </a>
+        <!-- Saldo -->
+        <a href="saldo.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-wallet text-xl'></i>
+          <span class="font-medium">Saldo</span>
+        </a>
+        <!-- Laporan -->
+        <a href="laporan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 hover:text-white transition-all">
+          <i class='bx bxs-bar-chart-square text-xl'></i>
+          <span class="font-medium">Laporan</span>
+        </a>
+
+        <!-- Divider -->
+        <div class="pt-6 mt-4 border-t border-blue-700/40"></div>
+
+        <!-- Menu tambahan opsional (tetap dalam sidebar) -->
+        <a href="pengaturan.html"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bx-cog'></i>
+          <span>Pengaturan</span>
+        </a>
+        <a href="#"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bx-support'></i>
+          <span>Bantuan</span>
+        </a>
+      </nav>
+
+      <!-- Footer sidebar -->
+      <div class="p-4 border-t border-blue-700/40">
+        <div class="bg-blue-950/40 p-3 rounded-xl text-xs text-blue-200 flex items-center gap-2">
+          <i class='bx bx-server text-yellow-300 text-lg'></i>
+          <span>Gateway • Online <span class="inline-block w-2 h-2 bg-green-400 rounded-full ml-1"></span></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <!-- Top navbar (header) -->
+      <header
+        class="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <button class="text-gray-500 hover:text-blue-700 lg:hidden">
+            <i class='bx bx-menu text-2xl'></i>
+          </button>
+          <h2 class="text-2xl font-bold text-gray-800">Dashboard <span
+              class="text-blue-600 text-base font-normal ml-2">| Jaringan WiFi</span></h2>
+        </div>
+        <div class="flex items-center gap-4">
+          <!-- notifikasi -->
+          <button class="relative p-2 text-gray-500 hover:text-blue-700 bg-gray-100 rounded-full">
+            <i class='bx bx-bell text-xl'></i>
+            <span
+              class="absolute top-0 right-0 w-4 h-4 bg-yellow-400 text-blue-900 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+          </button>
+          <!-- action button dengan modal Flowbite -->
+          <button data-modal-target="default-modal" data-modal-toggle="default-modal"
+            class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow transition">
+            <i class='bx bx-plus-circle'></i> <span>Quick Action</span>
+          </button>
+          <!-- user avatar -->
+          <img class="w-9 h-9 rounded-full ring-2 ring-blue-200"
+            src="https://ui-avatars.com/api/?name=Ardi+N&background=1e3a8a&color=fbbf24&bold=true" alt="user">
+        </div>
+      </header>
+
+      <!-- Dashboard content -->
+      <div class="p-6 space-y-6">
+        <!-- Cards row : statistik -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- card 1 -->
+          <div
+            class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-blue-600 flex items-center justify-between hover:shadow-lg transition">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Total Customer</p>
+              <h3 class="text-3xl font-bold text-gray-800">1,284</h3>
+              <span class="text-green-600 text-xs flex items-center gap-1 mt-1"><i class='bx bx-up-arrow-alt'></i>
+                +8.2%</span>
+            </div>
+            <div class="bg-blue-100 p-3 rounded-xl text-blue-700">
+              <i class='bx bx-group text-3xl'></i>
+            </div>
+          </div>
+          <!-- card 2 -->
+          <div
+            class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-yellow-400 flex items-center justify-between hover:shadow-lg transition">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Tagihan Bulan Ini</p>
+              <h3 class="text-3xl font-bold text-gray-800">Rp 187,5jt</h3>
+              <span class="text-yellow-600 text-xs flex items-center gap-1 mt-1"><i class='bx bx-time'></i> 32
+                menunggu</span>
+            </div>
+            <div class="bg-yellow-100 p-3 rounded-xl text-yellow-700">
+              <i class='bx bx-credit-card text-3xl'></i>
+            </div>
+          </div>
+          <!-- card 3 -->
+          <div
+            class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-emerald-500 flex items-center justify-between hover:shadow-lg transition">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Saldo Tersimpan</p>
+              <h3 class="text-3xl font-bold text-gray-800">Rp 42,8jt</h3>
+              <span class="text-gray-500 text-xs">+ Rp 3.2jt deposit</span>
+            </div>
+            <div class="bg-emerald-100 p-3 rounded-xl text-emerald-700">
+              <i class='bx bx-wallet text-3xl'></i>
+            </div>
+          </div>
+          <!-- card 4 -->
+          <div
+            class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-blue-400 flex items-center justify-between hover:shadow-lg transition">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Laporan Aktif</p>
+              <h3 class="text-3xl font-bold text-gray-800">6 Laporan</h3>
+              <span class="text-blue-500 text-xs">2 baru hari ini</span>
+            </div>
+            <div class="bg-blue-50 p-3 rounded-xl text-blue-500">
+              <i class='bx bx-file text-3xl'></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table + Aktivitas (modern layout) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Tabel Customer terbaru (dari modul customer) -->
+          <div class="lg:col-span-2 bg-white rounded-2xl shadow-md p-5 border border-gray-100">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2"><i
+                  class='bx bx-wifi text-blue-600 text-xl'></i> Pelanggan Terbaru</h3>
+              <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">Lihat
+                semua <i class='bx bx-chevron-right'></i></a>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-600 border-b">
+                  <tr>
+                    <th class="px-4 py-3 text-left font-semibold">Nama / ID</th>
+                    <th class="px-4 py-3 text-left font-semibold">Paket</th>
+                    <th class="px-4 py-3 text-left font-semibold">Status</th>
+                    <th class="px-4 py-3 text-left font-semibold">Tagihan</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y">
+                  <tr class="hover:bg-blue-50/30">
+                    <td class="px-4 py-3 font-medium">Andi Susanto <span class="text-gray-400 text-xs block">ID:
+                        10021</span></td>
+                    <td class="px-4 py-3">Internet 50Mbps</td>
+                    <td class="px-4 py-3"><span
+                        class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">Aktif</span></td>
+                    <td class="px-4 py-3 font-semibold">Rp 279K</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/30">
+                    <td class="px-4 py-3 font-medium">Maya Lestari <span class="text-gray-400 text-xs block">ID:
+                        10245</span></td>
+                    <td class="px-4 py-3">Internet 100Mbps</td>
+                    <td class="px-4 py-3"><span
+                        class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-medium">Pending</span>
+                    </td>
+                    <td class="px-4 py-3 font-semibold">Rp 449K</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/30">
+                    <td class="px-4 py-3 font-medium">Budi Santoso <span class="text-gray-400 text-xs block">ID:
+                        10892</span></td>
+                    <td class="px-4 py-3">Dedicated 30Mbps</td>
+                    <td class="px-4 py-3"><span
+                        class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">Aktif</span></td>
+                    <td class="px-4 py-3 font-semibold">Rp 599K</td>
+                  </tr>
+                  <tr class="hover:bg-blue-50/30">
+                    <td class="px-4 py-3 font-medium">CV. Cahaya Net <span class="text-gray-400 text-xs block">ID:
+                        10734</span></td>
+                    <td class="px-4 py-3">Corporate 200Mbps</td>
+                    <td class="px-4 py-3"><span
+                        class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">VIP</span></td>
+                    <td class="px-4 py-3 font-semibold">Rp 1,2jt</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- aksi cepat: button dengan SweetAlert -->
+            <div class="mt-4 flex gap-2">
+              <button onclick="showAddCustomerAlert()"
+                class="text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-2 rounded-xl flex items-center gap-1 transition"><i
+                  class='bx bx-user-plus'></i>Tambah Pelanggan</button>
+              <button onclick="showTagihanAlert()"
+                class="text-sm bg-yellow-50 hover:bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl flex items-center gap-1 transition"><i
+                  class='bx bx-receipt'></i>Buat Tagihan</button>
+            </div>
+          </div>
+
+          <!-- Panel ringkasan tagihan / saldo -->
+          <div class="bg-white rounded-2xl shadow-md p-5 border border-gray-100 flex flex-col">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-gray-800 flex items-center gap-2"><i
+                  class='bx bx-wallet-alt text-yellow-500'></i> Saldo & Tagihan</h3>
+              <i class='bx bx-dots-horizontal-rounded text-gray-400'></i>
+            </div>
+            <div class="mt-4 space-y-4">
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl">
+                <div class="text-sm text-gray-500">Saldo Tersedia</div>
+                <div class="text-3xl font-extrabold text-blue-800">Rp 42,8jt</div>
+                <div class="flex gap-2 mt-2">
+                  <span class="bg-white/70 text-xs px-2 py-1 rounded">Top up otomatis</span>
+                </div>
+              </div>
+              <div class="flex justify-between items-center border-b pb-2">
+                <span class="text-gray-600">Tagihan overdue</span>
+                <span class="font-semibold text-red-500">Rp 4,2jt</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-600">Akan jatuh tempo (7hr)</span>
+                <span class="font-semibold">Rp 12,8jt</span>
+              </div>
+            </div>
+            <div class="mt-auto pt-6">
+              <button data-modal-target="saldo-modal" data-modal-toggle="saldo-modal"
+                class="w-full bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
+                <i class='bx bx-plus-circle'></i> Atur Saldo / Deposit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian laporan singkat (5. Laporan) -->
+        <div class="bg-white rounded-2xl shadow-md p-5 border border-gray-100">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="font-bold text-lg flex items-center gap-2"><i class='bx bx-trending-up text-blue-600'></i>
+              Laporan Cepat • Kinerja Jaringan</h3>
+            <a href="#" class="text-blue-600 text-sm flex items-center">Lihat Laporan <i
+                class='bx bx-chevron-right'></i></a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-50 p-4 rounded-xl flex items-center gap-3">
+              <div class="bg-blue-100 p-3 rounded-lg text-blue-700"><i class='bx bx-signal-5 text-2xl'></i></div>
+              <div>
+                <p class="text-xs text-gray-500">Uptime (30 hari)</p>
+                <p class="text-xl font-bold">99.98%</p>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-xl flex items-center gap-3">
+              <div class="bg-yellow-100 p-3 rounded-lg text-yellow-700"><i class='bx bx-time text-2xl'></i></div>
+              <div>
+                <p class="text-xs text-gray-500">Rata² latency</p>
+                <p class="text-xl font-bold">8 ms</p>
+              </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-xl flex items-center gap-3">
+              <div class="bg-emerald-100 p-3 rounded-lg text-emerald-700"><i class='bx bx-data text-2xl'></i></div>
+              <div>
+                <p class="text-xs text-gray-500">Bandwidth terpakai</p>
+                <p class="text-xl font-bold">2.4 Gbps</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========== MODAL FLOWBITE (tanpa style tambahan, hanya data attributes) ========= -->
+  <!-- Modal Quick Action (default-modal) -->
+  <div id="default-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative bg-white rounded-2xl shadow dark:bg-gray-800">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2"><i
+              class='bx bx-flash text-yellow-400'></i>Aksi Cepat</h3>
+          <button type="button"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+            data-modal-hide="default-modal">
+            <i class='bx bx-x text-xl'></i>
+          </button>
+        </div>
+        <div class="p-4 space-y-3">
+          <p class="text-gray-600">Pilih tindakan untuk pelanggan atau jaringan.</p>
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="showAddCustomerAlert()"
+              class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg text-sm flex items-center gap-1 justify-center"><i
+                class='bx bx-user-plus'></i>Customer</button>
+            <button onclick="showTagihanAlert()"
+              class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-3 rounded-lg text-sm flex items-center gap-1 justify-center"><i
+                class='bx bx-money'></i>Tagihan</button>
+            <button onclick="Swal.fire('Cek Saldo','Saldo saat ini Rp 42.8jt','info')"
+              class="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-3 rounded-lg text-sm flex items-center gap-1 justify-center"><i
+                class='bx bx-wallet'></i>Saldo</button>
+            <button onclick="Swal.fire('Laporan','Mengunduh laporan bulanan..','success')"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 rounded-lg text-sm flex items-center gap-1 justify-center"><i
+                class='bx bx-file'></i>Laporan</button>
+          </div>
+        </div>
+        <div class="flex p-4 border-t border-gray-200 rounded-b">
+          <button data-modal-hide="default-modal" type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal khusus Saldo (saldo-modal) -->
+  <div id="saldo-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative bg-white rounded-2xl shadow">
+        <div class="flex items-center justify-between p-4 border-b">
+          <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2"><i
+              class='bx bx-wallet text-yellow-500'></i> Pengaturan Saldo</h3>
+          <button type="button" class="text-gray-400 hover:bg-gray-100 rounded-lg p-1" data-modal-hide="saldo-modal"><i
+              class='bx bx-x text-xl'></i></button>
+        </div>
+        <div class="p-5 space-y-4">
+          <div><label class="block text-sm font-medium mb-1">Jumlah Deposit</label><input type="text"
+              value="Rp 5.000.000" class="w-full border border-gray-300 rounded-lg p-2.5"></div>
+          <button onclick="Swal.fire('Berhasil','Saldo berhasil diperbarui','success');"
+            class="w-full bg-blue-700 text-white py-2.5 rounded-xl">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- flowbite js -->
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+
+  <!-- Script ringan untuk SweetAlert interaktif -->
+  <script>
+    function showAddCustomerAlert() {
+      Swal.fire({
+        title: 'Tambah Pelanggan Baru',
+        html: `<input id="swal-input1" class="swal2-input" placeholder="Nama lengkap">`,
+        icon: 'info',
+        confirmButtonText: 'Simpan',
+        confirmButtonColor: '#2563eb',
+        showCancelButton: true,
+        preConfirm: () => {
+          const name = document.getElementById('swal-input1').value;
+          if (!name) Swal.showValidationMessage('Nama diperlukan');
+          return name;
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('Berhasil!', 'Pelanggan ditambahkan.', 'success');
+        }
+      });
+    }
+
+    function showTagihanAlert() {
+      Swal.fire({
+        title: 'Buat Tagihan Baru',
+        html: `
+        <select id="cust" class="swal2-select border p-2 w-full rounded">
+          <option>Pilih Pelanggan</option><option>Andi Susanto</option><option>Maya Lestari</option>
+        </select>
+        <input id="amount" class="swal2-input mt-2" placeholder="Jumlah Rp">
+      `,
+        confirmButtonText: 'Buat Tagihan',
+        confirmButtonColor: '#eab308',
+        preConfirm: () => {
+          const amount = document.getElementById('amount').value;
+          if (!amount) Swal.showValidationMessage('isi jumlah');
+        }
+      }).then((res) => { if (res.isConfirmed) Swal.fire('Tagihan Dibuat', '', 'success'); });
+    }
+
+    // Tambahan: sidebar highlight (active dinamis, manual)
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (e) {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('bg-blue-700/70', 'shadow-md'));
+        this.classList.add('bg-blue-700/70', 'shadow-md');
+      });
+    });
+  </script>
+  <!-- Tanpa tag style tambahan, hanya tailwind & library -->
+</body>
+
+</html>

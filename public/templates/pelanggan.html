@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer • NetFlow WiFi</title>
+  <!-- Tailwind + Flowbite + BoxIcons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>/* no extra style */</style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- SIDEBAR (konsisten biru + aksen kuning) -->
+  <aside class="w-72 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl">
+    <!-- Brand -->
+      <div class="flex items-center gap-3 px-5 py-6 border-b border-blue-700/60">
+        <div class=" rounded-xl  shadow-md">
+          <img src="./images/logo-buana.png" alt="Logo Buana" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Buana<span class="text-yellow-300">Net</span></h1>
+          <p class="text-xs text-blue-200 -mt-1">Admin Console</p>
+        </div>
+      </div>
+    <div class="px-5 py-4 flex items-center gap-3 border-b border-blue-700/40">
+      <img class="w-10 h-10 rounded-full ring-2 ring-yellow-300 object-cover" src="https://ui-avatars.com/api/?name=Admin+WiFi&background=fbbf24&color=1e3a8a&bold=true" alt="admin">
+      <div class="text-sm">
+        <p class="font-semibold">Ardi Network</p>
+        <p class="text-blue-200 text-xs flex items-center gap-1"><i class='bx bx-badge-check text-yellow-300'></i>Super Admin</p>
+      </div>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+      <a href="index.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+        <i class='bx bxs-dashboard text-xl'></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="pelanggan.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-blue-700/70 shadow-md transition-all">
+        <i class='bx bxs-user-detail text-xl text-yellow-300'></i>
+        <span>Customer</span>
+      </a>
+      <a href="tagihan.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+        <i class='bx bxs-receipt text-xl'></i>
+        <span>Tagihan</span>
+      </a>
+      <a href="saldo.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+        <i class='bx bxs-wallet text-xl'></i>
+        <span>Saldo</span>
+      </a>
+      <a href="laporan.html" class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+        <i class='bx bxs-bar-chart-square text-xl'></i>
+        <span>Laporan</span>
+      </a>
+      <div class="pt-6 mt-4 border-t border-blue-700/40"></div>
+      <a href="pengaturan.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60"><i class='bx bx-cog'></i><span>Pengaturan</span></a>
+    </nav>
+    <div class="p-4 border-t border-blue-700/40">
+      <div class="bg-blue-950/40 p-3 rounded-xl text-xs text-blue-200 flex items-center gap-2">
+        <i class='bx bx-server text-yellow-300 text-lg'></i>
+        <span>Gateway • Online <span class="inline-block w-2 h-2 bg-green-400 rounded-full ml-1"></span></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 overflow-y-auto bg-gray-50">
+    <header class="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+      <div class="flex items-center gap-3">
+        <button class="text-gray-500 hover:text-blue-700 lg:hidden"><i class='bx bx-menu text-2xl'></i></button>
+        <h2 class="text-2xl font-bold text-gray-800">Manajemen Customer <span class="text-blue-600 text-base font-normal ml-2">| WiFi & Mitra</span></h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="relative p-2 text-gray-500 hover:text-blue-700 bg-gray-100 rounded-full">
+          <i class='bx bx-bell text-xl'></i>
+          <span class="absolute top-0 right-0 w-4 h-4 bg-yellow-400 text-blue-900 text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+        </button>
+        <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-xl text-sm shadow"><i class='bx bx-plus-circle'></i> Quick</button>
+        <img class="w-9 h-9 rounded-full ring-2 ring-blue-200" src="https://ui-avatars.com/api/?name=Ardi+N&background=1e3a8a&color=fbbf24" alt="user">
+      </div>
+    </header>
+
+    <div class="p-6">
+      <!-- TABS / NAVIGASI SECTION CUSTOMER (3 section) -->
+      <div class="mb-6 border-b border-gray-200">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="customerTabs" data-tabs-toggle="#customerTabContent" role="tablist">
+          <li class="mr-2" role="presentation">
+            <button class="inline-flex items-center gap-2 p-4 border-b-2 rounded-t-lg text-blue-600 border-blue-600 active" id="penyewa-tab" data-tabs-target="#penyewa" type="button" role="tab" aria-controls="penyewa" aria-selected="true">
+              <i class='bx bx-user-circle text-lg'></i>Penyewa WiFi
+            </button>
+          </li>
+          <li class="mr-2" role="presentation">
+            <button class="inline-flex items-center gap-2 p-4 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300" id="instansi-tab" data-tabs-target="#instansi" type="button" role="tab" aria-controls="instansi" aria-selected="false">
+              <i class='bx bx-building-house text-lg'></i>Instansi
+            </button>
+          </li>
+          <li role="presentation">
+            <button class="inline-flex items-center gap-2 p-4 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300" id="mitra-tab" data-tabs-target="#mitra" type="button" role="tab" aria-controls="mitra" aria-selected="false">
+              <i class='bx bx-store-alt text-lg'></i>Mitra Bisnis
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- TAB CONTENT -->
+      <div id="customerTabContent">
+        <!-- SECTION 1: PENYEWA WIFI (perorangan & instansi digabung disini, field lengkap) -->
+        <div class="hidden p-4 bg-white rounded-2xl shadow-sm border border-gray-100" id="penyewa" role="tabpanel" aria-labelledby="penyewa-tab">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2"><i class='bx bx-wifi text-blue-600'></i> Daftar Penyewa WiFi (Perorangan/Instansi)</h3>
+            <button onclick="openCrudModal('penyewa', 'add')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow transition"><i class='bx bx-plus'></i>Tambah Penyewa</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="penyewaTable">
+              <thead class="bg-gray-50 text-gray-700 border-b">
+                <tr>
+                  <th class="px-4 py-3 text-left">Nama</th><th class="px-4 py-3 text-left">No HP</th><th class="px-4 py-3 text-left">IP Address</th><th class="px-4 py-3 text-left">Alamat</th>
+                  <th class="px-4 py-3 text-left">Koordinat</th><th class="px-4 py-3 text-left">Kategori</th><th class="px-4 py-3 text-left">Pembayaran</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-left">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                <!-- Data akan dirender via js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECTION 2: INSTANSI (field sama seperti penyewa) -->
+        <div class="hidden p-4 bg-white rounded-2xl shadow-sm border border-gray-100" id="instansi" role="tabpanel" aria-labelledby="instansi-tab">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2"><i class='bx bx-buildings text-blue-600'></i> Daftar Instansi (Kategori Instansi)</h3>
+            <button onclick="openCrudModal('instansi', 'add')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow"><i class='bx bx-plus'></i>Tambah Instansi</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="instansiTable">
+              <thead class="bg-gray-50 text-gray-700 border-b">
+                <tr><th>Nama</th><th>No HP</th><th>IP</th><th>Alamat</th><th>Koordinat</th><th>Kategori</th><th>Pembayaran</th><th>Status</th><th>Aksi</th></tr>
+              </thead>
+              <tbody class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECTION 3: MITRA BISNIS (field: nama, alamat, no hp) -->
+        <div class="hidden p-4 bg-white rounded-2xl shadow-sm border border-gray-100" id="mitra" role="tabpanel" aria-labelledby="mitra-tab">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2"><i class='bx bx-package text-blue-600'></i> Mitra Bisnis (Stok & Barang)</h3>
+            <button onclick="openCrudModal('mitra', 'add')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow"><i class='bx bx-plus'></i>Tambah Mitra</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="mitraTable">
+              <thead class="bg-gray-50 text-gray-700 border-b">
+                <tr><th>Nama</th><th>Alamat</th><th>No HP</th><th>Aksi</th></tr>
+              </thead>
+              <tbody class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL CRUD (dinamis isinya berdasarkan tipe) -->
+<div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-3xl max-h-full">
+    <div class="relative bg-white rounded-2xl shadow">
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-2" id="modalTitle"><i class='bx bx-user-plus text-yellow-400'></i>Tambah Data</h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="crudModal">
+          <i class='bx bx-x text-xl'></i>
+        </button>
+      </div>
+      <form id="crudForm" onsubmit="return false;">
+        <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto" id="modalFields"></div>
+        <div class="flex items-center p-4 border-t border-gray-200 rounded-b">
+          <button type="submit" onclick="submitCrud()" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Simpan</button>
+          <button data-modal-hide="crudModal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Quick modal (default) -->
+<div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-md max-h-full">
+    <div class="relative bg-white rounded-2xl shadow"><div class="flex items-center justify-between p-4 border-b"><h3 class="text-xl font-semibold">Aksi Cepat</h3><button type="button" class="text-gray-400 hover:bg-gray-200 rounded-lg p-1" data-modal-hide="default-modal"><i class='bx bx-x'></i></button></div>
+    <div class="p-4 space-y-3">
+      <button onclick="openCrudModal('penyewa','add');" class="w-full bg-blue-600 text-white py-2 rounded-lg">➕ Tambah Penyewa</button>
+      <button onclick="openCrudModal('instansi','add');" class="w-full bg-indigo-600 text-white py-2 rounded-lg">🏢 Tambah Instansi</button>
+      <button onclick="openCrudModal('mitra','add');" class="w-full bg-yellow-500 text-white py-2 rounded-lg">📦 Tambah Mitra</button>
+    </div></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+<script>
+  // Data store sementara (simulasi CRUD)
+  const dataStore = {
+    penyewa: [
+      { id:1, nama:'Andi Susanto', nohp:'08123456789', ip:'192.168.1.10', alamat:'Jl. Melati 12', koordinat:'-6.200,106.816', kategori:'Perorangan', pembayaran:'Lunas', status:'Aktif' },
+      { id:2, nama:'PT. Maju Jaya', nohp:'08129876543', ip:'192.168.1.20', alamat:'Gedung A Lantai 3', koordinat:'-6.210,106.820', kategori:'Instansi', pembayaran:'Menunggak', status:'Nonaktif' }
+    ],
+    instansi: [
+      { id:3, nama:'Dinas Pendidikan', nohp:'081311223344', ip:'10.10.10.5', alamat:'Jl. Pendidikan 1', koordinat:'-6.250,106.830', kategori:'Instansi', pembayaran:'Lunas', status:'Aktif' }
+    ],
+    mitra: [
+      { id:4, nama:'Toko Sumber Rejeki', alamat:'Jl. Raya Bogor Km 30', nohp:'081388887777' },
+      { id:5, nama:'CV. Global Tech', alamat:'Kawasan Industri Cikarang', nohp:'081277776666' }
+    ]
+  };
+
+  let currentEditId = null;
+  let currentType = 'penyewa';
+
+  // Render semua tabel
+  function renderTables() {
+    renderPenyewaTable();
+    renderInstansiTable();
+    renderMitraTable();
+  }
+  function renderPenyewaTable() {
+    const tbody = document.querySelector('#penyewaTable tbody');
+    tbody.innerHTML = dataStore.penyewa.map(item => `
+      <tr class="hover:bg-blue-50/30">
+        <td class="px-4 py-3 font-medium">${item.nama}</td><td class="px-4 py-3">${item.nohp}</td><td class="px-4 py-3 font-mono text-xs">${item.ip}</td>
+        <td class="px-4 py-3 max-w-[150px] truncate">${item.alamat}</td><td class="px-4 py-3 text-xs">${item.koordinat}</td>
+        <td class="px-4 py-3"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">${item.kategori}</span></td>
+        <td class="px-4 py-3"><span class="${item.pembayaran==='Lunas'?'bg-green-100 text-green-700':'bg-red-100 text-red-700'} px-2 py-1 rounded-full text-xs">${item.pembayaran}</span></td>
+        <td class="px-4 py-3"><span class="${item.status==='Aktif'?'bg-green-100 text-green-700':'bg-gray-100 text-gray-700'} px-2 py-1 rounded-full text-xs">${item.status}</span></td>
+        <td class="px-4 py-3">
+          <button onclick="openCrudModal('penyewa','edit',${item.id})" class="text-blue-600 hover:text-blue-800 mr-2"><i class='bx bx-edit'></i></button>
+          <button onclick="deleteItem('penyewa',${item.id})" class="text-red-500 hover:text-red-700"><i class='bx bx-trash'></i></button>
+        </td>
+      </tr>`).join('');
+  }
+  function renderInstansiTable() {
+    const tbody = document.querySelector('#instansiTable tbody');
+    tbody.innerHTML = dataStore.instansi.map(item => `
+      <tr><td class="px-4 py-3">${item.nama}</td><td class="px-4 py-3">${item.nohp}</td><td class="px-4 py-3">${item.ip}</td><td class="px-4 py-3">${item.alamat}</td><td class="px-4 py-3">${item.koordinat}</td><td class="px-4 py-3">${item.kategori}</td>
+      <td class="px-4 py-3"><span class="${item.pembayaran==='Lunas'?'bg-green-100 text-green-700':'bg-red-100 text-red-700'} px-2 py-1 rounded-full text-xs">${item.pembayaran}</span></td>
+      <td class="px-4 py-3">${item.status}</td>
+      <td class="px-4 py-3"><button onclick="openCrudModal('instansi','edit',${item.id})" class="text-blue-600 mr-2"><i class='bx bx-edit'></i></button><button onclick="deleteItem('instansi',${item.id})" class="text-red-500"><i class='bx bx-trash'></i></button></td></tr>`).join('');
+  }
+  function renderMitraTable() {
+    const tbody = document.querySelector('#mitraTable tbody');
+    tbody.innerHTML = dataStore.mitra.map(item => `
+      <tr><td class="px-4 py-3 font-medium">${item.nama}</td><td class="px-4 py-3">${item.alamat}</td><td class="px-4 py-3">${item.nohp}</td>
+      <td class="px-4 py-3"><button onclick="openCrudModal('mitra','edit',${item.id})" class="text-blue-600 mr-2"><i class='bx bx-edit'></i></button><button onclick="deleteItem('mitra',${item.id})" class="text-red-500"><i class='bx bx-trash'></i></button></td></tr>`).join('');
+  }
+
+  // Buka modal CRUD
+  window.openCrudModal = function(type, mode, id = null) {
+    currentType = type;
+    currentEditId = id;
+    const modal = document.getElementById('crudModal');
+    const title = document.getElementById('modalTitle');
+    const fieldsDiv = document.getElementById('modalFields');
+    const modalObj = new Flowbite.Modal(modal);
+    
+    let existing = {};
+    if (mode === 'edit' && id) {
+      const item = dataStore[type].find(i => i.id === id);
+      if (item) existing = item;
+    }
+    
+    title.innerHTML = mode==='add' ? `<i class='bx bx-plus-circle text-yellow-400'></i> Tambah ${type==='penyewa'?'Penyewa':type==='instansi'?'Instansi':'Mitra'}` : `<i class='bx bx-edit-alt text-yellow-400'></i> Edit Data`;
+    
+    let html = '';
+    if (type === 'penyewa' || type === 'instansi') {
+      html = `
+        <div><label class="block text-sm font-medium mb-1">Nama</label><input id="nama" value="${existing.nama || ''}" class="w-full border rounded-lg p-2.5" required></div>
+        <div><label class="block text-sm font-medium mb-1">No HP</label><input id="nohp" value="${existing.nohp || ''}" class="w-full border rounded-lg p-2.5"></div>
+        <div><label class="block text-sm font-medium mb-1">IP Address</label><input id="ip" value="${existing.ip || ''}" class="w-full border rounded-lg p-2.5"></div>
+        <div><label class="block text-sm font-medium mb-1">Alamat</label><textarea id="alamat" class="w-full border rounded-lg p-2.5">${existing.alamat || ''}</textarea></div>
+        <div><label class="block text-sm font-medium mb-1">Koordinat</label><input id="koordinat" value="${existing.koordinat || ''}" class="w-full border rounded-lg p-2.5"></div>
+        <div><label class="block text-sm font-medium mb-1">Kategori</label><select id="kategori" class="w-full border rounded-lg p-2.5"><option ${existing.kategori==='Perorangan'?'selected':''}>Perorangan</option><option ${existing.kategori==='Instansi'?'selected':''}>Instansi</option></select></div>
+        <div><label class="block text-sm font-medium mb-1">Pembayaran</label><select id="pembayaran" class="w-full border rounded-lg p-2.5"><option ${existing.pembayaran==='Lunas'?'selected':''}>Lunas</option><option ${existing.pembayaran==='Menunggak'?'selected':''}>Menunggak</option></select></div>
+        <div><label class="block text-sm font-medium mb-1">Status</label><select id="status" class="w-full border rounded-lg p-2.5"><option ${existing.status==='Aktif'?'selected':''}>Aktif</option><option ${existing.status==='Nonaktif'?'selected':''}>Nonaktif</option></select></div>
+      `;
+    } else {
+      html = `
+        <div><label class="block text-sm font-medium mb-1">Nama Mitra</label><input id="nama" value="${existing.nama || ''}" class="w-full border rounded-lg p-2.5" required></div>
+        <div><label class="block text-sm font-medium mb-1">Alamat</label><textarea id="alamat" class="w-full border rounded-lg p-2.5">${existing.alamat || ''}</textarea></div>
+        <div><label class="block text-sm font-medium mb-1">No HP</label><input id="nohp" value="${existing.nohp || ''}" class="w-full border rounded-lg p-2.5"></div>
+      `;
+    }
+    fieldsDiv.innerHTML = html;
+    modalObj.show();
+  };
+
+  window.submitCrud = function() {
+    const type = currentType;
+    const id = currentEditId;
+    let newData = {};
+    
+    if (type === 'penyewa' || type === 'instansi') {
+      const nama = document.getElementById('nama')?.value;
+      if (!nama) { Swal.fire('Error','Nama harus diisi','warning'); return; }
+      newData = {
+        id: id || Date.now(),
+        nama, nohp: document.getElementById('nohp').value, ip: document.getElementById('ip').value,
+        alamat: document.getElementById('alamat').value, koordinat: document.getElementById('koordinat').value,
+        kategori: document.getElementById('kategori').value, pembayaran: document.getElementById('pembayaran').value,
+        status: document.getElementById('status').value
+      };
+    } else {
+      const nama = document.getElementById('nama')?.value;
+      if (!nama) { Swal.fire('Error','Nama diperlukan','warning'); return; }
+      newData = {
+        id: id || Date.now(),
+        nama, alamat: document.getElementById('alamat').value, nohp: document.getElementById('nohp').value
+      };
+    }
+    
+    if (id) {
+      const index = dataStore[type].findIndex(i => i.id === id);
+      if (index !== -1) dataStore[type][index] = newData;
+    } else {
+      dataStore[type].push(newData);
+    }
+    renderTables();
+    Flowbite.Modal.getInstance(document.getElementById('crudModal')).hide();
+    Swal.fire('Berhasil!', 'Data tersimpan.', 'success');
+  };
+
+  window.deleteItem = function(type, id) {
+    Swal.fire({ title: 'Yakin hapus?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Hapus' }).then((res) => {
+      if (res.isConfirmed) {
+        dataStore[type] = dataStore[type].filter(i => i.id !== id);
+        renderTables();
+        Swal.fire('Terhapus', '', 'success');
+      }
+    });
+  };
+
+  // Inisialisasi
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTables();
+    // Tab Flowbite inisialisasi
+    const tabsElement = document.getElementById('customerTabs');
+    if (tabsElement) {
+      const tabs = new Flowbite.Tabs(tabsElement);
+    }
+  });
+</script>
+</body>
+</html>

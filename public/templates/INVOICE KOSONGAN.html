@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .header table {
+            width: 100%;
+        }
+
+        .logo-section {
+            width: 60%;
+        }
+
+        .logo {
+            width: 60px;
+        }
+
+        .company-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .right-info {
+            width: 40%;
+            text-align: right;
+        }
+
+        .right-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .right-info td {
+            padding: 3px;
+        }
+
+        /* ===== KEPADA ===== */
+        .kepada {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== TABLE ===== */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .table th {
+            background: #f3f3f3;
+        }
+
+        /* ===== TOTAL ===== */
+        .total {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .total table {
+            width: 40%;
+            float: right;
+            border-collapse: collapse;
+        }
+
+        .total td {
+            padding: 5px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .ttd {
+            width: 100%;
+            text-align: right;
+        }
+
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <table>
+            <tr>
+                <!-- kiri -->
+                <td class="logo-section">
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="{{ public_path('logo.png') }}" class="logo">
+                            </td>
+                            <td>
+                                <div class="company-name">PT BUANA DATA MEDIA</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                <!-- kanan -->
+                <td class="right-info">
+                    <table>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>: {{ $tanggal }}</td>
+                        </tr>
+                        <tr>
+                            <td>Periode</td>
+                            <td>: {{ $periode }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Kepada -->
+        <div class="kepada">
+            Kepada Yth:<br>
+            <strong>{{ $nama }}</strong>
+        </div>
+    </div>
+
+    <!-- ===== BODY TABLE ===== -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Keterangan / Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $keterangan }}</td>
+                <td>1</td>
+                <td>Rp {{ number_format($harga) }}</td>
+                <td>Rp {{ number_format($harga) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== TOTAL ===== -->
+    <div class="total">
+        <table>
+            <tr>
+                <td><strong>Subtotal</strong></td>
+                <td>Rp {{ number_format($harga) }}</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td>Rp {{ number_format($harga) }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="clear"></div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        <div class="ttd">
+            Hormat Kami,<br><br><br><br>
+            <strong>Finance</strong>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

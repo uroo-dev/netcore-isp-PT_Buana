@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login • BuanaNet WiFi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-800 via-blue-900 to-indigo-900 min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-md">
+
+    <!-- Logo & Brand -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm p-4 rounded-2xl mb-4">
+        <img src="./images/logo-buana.png" alt="Logo Buana" class="w-auto h-16 object-contain">
+      </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-3">
+          <i class='bx bx-user-circle text-2xl text-blue-600'></i>
+        </div>
+        <h2 class="text-xl font-bold text-gray-800">Selamat Datang</h2>
+        <p class="text-gray-500 text-sm mt-1">Silakan login ke akun Anda</p>
+      </div>
+
+      <!-- Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+
+        <!-- Username -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Username</label>
+          <div class="relative">
+            <i class='bx bx-user absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg'></i>
+            <input type="text" id="username" required placeholder="Masukkan username" class="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+          <div class="relative">
+            <i class='bx bx-lock-alt absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg'></i>
+            <input type="password" id="password" required placeholder="••••••••" class="w-full pl-11 pr-12 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition">
+            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+              <i class='bx bx-hide text-lg' id="toggleIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember & Forgot -->
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="remember" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+            <span class="text-gray-600">Ingat saya</span>
+          </label>
+          <a href="#" onclick="forgotPassword()" class="text-blue-600 hover:text-blue-800 font-medium">Lupa password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+          <i class='bx bx-log-in text-lg'></i> Masuk
+        </button>
+      </form>
+
+      <!-- Register Link -->
+      <div class="text-center mt-6 text-sm text-gray-500">
+        Belum punya akun?
+        <a href="register.html" class="text-blue-600 hover:text-blue-800 font-medium">Daftar sekarang</a>
+      </div>
+    </div>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('toggleIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('bx-hide', 'bx-show');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('bx-show', 'bx-hide');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      Swal.fire({
+        title: 'Memproses...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      setTimeout(() => {
+        if (username === 'admin' && password === 'admin123') {
+          Swal.fire({ icon: 'success', title: 'Login Berhasil', text: 'Selamat datang kembali!', timer: 1500, showConfirmButton: false });
+          setTimeout(() => window.location.href = 'dashboard.html', 1500);
+        } else {
+          Swal.fire({ icon: 'error', title: 'Login Gagal', text: 'Username atau password salah' });
+        }
+      }, 800);
+    }
+
+    function forgotPassword() {
+      Swal.fire({
+        title: 'Reset Password',
+        input: 'email',
+        inputLabel: 'Masukkan email Anda',
+        inputPlaceholder: 'email@domain.com',
+        showCancelButton: true,
+        confirmButtonText: 'Kirim',
+        confirmButtonColor: '#2563eb'
+      }).then(r => {
+        if (r.isConfirmed) Swal.fire({ icon: 'success', title: 'Terkirim!', text: 'Cek email Anda untuk reset password.' });
+      });
+    }
+  </script>
+</body>
+</html>

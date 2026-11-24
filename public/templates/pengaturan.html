@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengaturan • NetFlow WiFi</title>
+  <!-- Tailwind + Flowbite + BoxIcons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .readonly-field {
+      background-color: #f9fafb;
+      color: #374151;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans antialiased">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR (konsisten biru + aksen kuning) -->
+    <aside class="w-72 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl">
+      <div class="flex items-center gap-3 px-5 py-6 border-b border-blue-700/60">
+        <div class=" rounded-xl  shadow-md">
+          <img src="./images/logo-buana.png" alt="Logo Buana" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Buana<span class="text-yellow-300">Net</span></h1>
+          <p class="text-xs text-blue-200 -mt-1">Admin Console</p>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <a href="index.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bxs-dashboard text-xl'></i><span>Dashboard</span>
+        </a>
+        <a href="pelanggan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bxs-user-detail text-xl'></i><span>Customer</span>
+        </a>
+        <a href="tagihan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bxs-receipt text-xl'></i><span>Tagihan</span>
+        </a>
+        <a href="saldo.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bxs-wallet text-xl'></i><span>Saldo</span>
+        </a>
+        <a href="laporan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all">
+          <i class='bx bxs-bar-chart-square text-xl'></i><span>Laporan</span>
+        </a>
+        <div class="pt-6 mt-4 border-t border-blue-700/40"></div>
+        <a href="pengaturan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-blue-700/70 shadow-md transition-all">
+          <i class='bx bx-cog text-xl text-yellow-300'></i><span>Pengaturan</span>
+        </a>
+      </nav>
+      <div class="p-4 border-t border-blue-700/40">
+        <div class="bg-blue-950/40 p-3 rounded-xl text-xs text-blue-200 flex items-center gap-2">
+          <i class='bx bx-server text-yellow-300 text-lg'></i>
+          <span>Gateway • Online <span class="inline-block w-2 h-2 bg-green-400 rounded-full ml-1"></span></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <header
+        class="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <button class="text-gray-500 hover:text-blue-700 lg:hidden"><i class='bx bx-menu text-2xl'></i></button>
+          <h2 class="text-2xl font-bold text-gray-800">Pengaturan Sistem <span
+              class="text-blue-600 text-base font-normal ml-2">| Konfigurasi & Preferensi</span></h2>
+        </div>
+        <div class="flex items-center gap-4">
+          <button onclick="simpanSemuaPengaturan()"
+            class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-xl flex items-center gap-2 shadow-md transition">
+            <i class='bx bx-save'></i> Simpan Perubahan
+          </button>
+          <img class="w-9 h-9 rounded-full ring-2 ring-blue-200"
+            src="https://ui-avatars.com/api/?name=Ardi+N&background=1e3a8a&color=fbbf24" alt="user">
+        </div>
+      </header>
+
+      <div class="p-6 space-y-6">
+        <!-- TABS PENGATURAN -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+          <div class="border-b border-gray-200">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium" id="pengaturanTabs"
+              data-tabs-toggle="#pengaturanTabContent" role="tablist">
+              <li class="mr-2" role="presentation">
+                <button class="inline-flex items-center gap-2 p-4 border-b-2 rounded-t-lg text-blue-600 border-blue-600"
+                  id="profil-tab" data-tabs-target="#profil" type="button" role="tab">
+                  <i class='bx bx-user-circle'></i> Profil Admin
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="sistem-tab" data-tabs-target="#sistem" type="button" role="tab">
+                  <i class='bx bx-slider-alt'></i> Preferensi Sistem
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="jaringan-tab" data-tabs-target="#jaringan" type="button" role="tab">
+                  <i class='bx bx-wifi'></i> Konfigurasi Jaringan
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="pengguna-tab" data-tabs-target="#pengguna" type="button" role="tab">
+                  <i class='bx bx-group'></i> Manajemen Pengguna
+                </button>
+              </li>
+              <li role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="notifikasi-tab" data-tabs-target="#notifikasi" type="button" role="tab">
+                  <i class='bx bx-bell'></i> Notifikasi
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div id="pengaturanTabContent">
+            <!-- TAB 1: PROFIL ADMIN -->
+            <div class="p-6" id="profil" role="tabpanel">
+              <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <i class='bx bx-user-circle text-blue-600'></i> Informasi Profil
+              </h3>
+
+              <div class="flex flex-col md:flex-row gap-6">
+                <!-- Foto Profil -->
+                <div class="md:w-1/3 flex flex-col items-center">
+                  <div class="relative">
+                    <img id="profileImage" class="w-32 h-32 rounded-full ring-4 ring-blue-200 object-cover"
+                      src="https://ui-avatars.com/api/?name=Ardi+Network&background=1e3a8a&color=fbbf24&size=128"
+                      alt="profile">
+                    <button onclick="gantiFoto()"
+                      class="absolute bottom-0 right-0 bg-yellow-400 p-2 rounded-full shadow-md hover:bg-yellow-500 transition">
+                      <i class='bx bx-camera text-blue-900'></i>
+                    </button>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-2">Klik ikon kamera untuk ganti foto</p>
+                </div>
+
+                <!-- Form Profil -->
+                <div class="md:w-2/3 space-y-4">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                      <input type="text" id="namaLengkap" value="Ardi Network"
+                        class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                      <input type="text" id="username" value="ardinetwork"
+                        class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                      <input type="email" id="email" value="ardi@netflow.co.id"
+                        class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">No. Telepon</label>
+                      <input type="tel" id="telepon" value="081234567890"
+                        class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                      <input type="text" value="Super Admin" readonly
+                        class="w-full border border-gray-200 rounded-lg p-2.5 readonly-field bg-gray-100">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Bergabung Sejak</label>
+                      <input type="text" value="01 Januari 2024" readonly
+                        class="w-full border border-gray-200 rounded-lg p-2.5 readonly-field bg-gray-100">
+                    </div>
+                  </div>
+
+                  <div class="border-t pt-4 mt-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">Ubah Password</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password Lama</label>
+                        <input type="password" id="passwordLama" class="w-full border border-gray-300 rounded-lg p-2.5"
+                          placeholder="••••••••">
+                      </div>
+                      <div></div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
+                        <input type="password" id="passwordBaru" class="w-full border border-gray-300 rounded-lg p-2.5"
+                          placeholder="••••••••">
+                      </div>
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
+                        <input type="password" id="passwordKonfirmasi"
+                          class="w-full border border-gray-300 rounded-lg p-2.5" placeholder="••••••••">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: PREFERENSI SISTEM -->
+            <div class="hidden p-6" id="sistem" role="tabpanel">
+              <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <i class='bx bx-slider-alt text-blue-600'></i> Preferensi Sistem
+              </h3>
+
+              <div class="space-y-6">
+                <!-- Umum -->
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="font-semibold text-gray-800 mb-3">Pengaturan Umum</h4>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Nama Perusahaan</label>
+                      <input type="text" id="namaPerusahaan" value="NetFlow WiFi"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Mata Uang</label>
+                      <select id="mataUang" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        <option selected>IDR (Rupiah)</option>
+                        <option>USD (Dollar)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Zona Waktu</label>
+                      <select id="zonaWaktu" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        <option selected>Asia/Jakarta (WIB)</option>
+                        <option>Asia/Makassar (WITA)</option>
+                        <option>Asia/Jayapura (WIT)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Format Tanggal</label>
+                      <select id="formatTanggal" class="w-full border border-gray-300 rounded-lg p-2.5">
+                        <option selected>DD/MM/YYYY</option>
+                        <option>MM/DD/YYYY</option>
+                        <option>YYYY-MM-DD</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Invoice & Tagihan -->
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="font-semibold text-gray-800 mb-3">Pengaturan Invoice & Tagihan</h4>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Prefix Invoice</label>
+                      <input type="text" id="prefixInvoice" value="INV"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Invoice Berikutnya</label>
+                      <input type="number" id="nextInvoice" value="4"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Jatuh Tempo Default (hari)</label>
+                      <input type="number" id="jatuhTempo" value="30"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Denda Keterlambatan (%)</label>
+                      <input type="number" id="denda" value="2" step="0.5"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Catatan Footer Invoice</label>
+                      <textarea id="footerInvoice" rows="2"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">Terima kasih telah menggunakan layanan NetFlow WiFi. Pembayaran dapat dilakukan melalui transfer ke BCA 123456789 a.n NetFlow WiFi.</textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tampilan -->
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="font-semibold text-gray-800 mb-3">Pengaturan Tampilan</h4>
+                  <div class="space-y-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="darkMode" class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Aktifkan Dark Mode</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="sidebarCollapsed" class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Sidebar Collapsed (Default)</span>
+                    </label>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Item per Halaman (Tabel)</label>
+                      <select id="itemPerHalaman" class="w-48 border border-gray-300 rounded-lg p-2.5">
+                        <option>10</option>
+                        <option selected>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 3: KONFIGURASI JARINGAN -->
+            <div class="hidden p-6" id="jaringan" role="tabpanel">
+              <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <i class='bx bx-wifi text-blue-600'></i> Konfigurasi Jaringan & Router
+              </h3>
+
+              <div class="space-y-5">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                  <div class="flex items-center gap-2 mb-3">
+                    <i class='bx bx-info-circle text-blue-600'></i>
+                    <span class="text-sm text-blue-800">Konfigurasi ini mempengaruhi koneksi ke perangkat jaringan dan
+                      monitoring.</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Gateway IP Address</label>
+                    <input type="text" id="gatewayIP" value="192.168.1.1"
+                      class="w-full border border-gray-300 rounded-lg p-2.5">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Subnet Mask</label>
+                    <input type="text" id="subnetMask" value="255.255.255.0"
+                      class="w-full border border-gray-300 rounded-lg p-2.5">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">DNS Primer</label>
+                    <input type="text" id="dnsPrimer" value="8.8.8.8"
+                      class="w-full border border-gray-300 rounded-lg p-2.5">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">DNS Sekunder</label>
+                    <input type="text" id="dnsSekunder" value="8.8.4.4"
+                      class="w-full border border-gray-300 rounded-lg p-2.5">
+                  </div>
+                </div>
+
+                <div class="border-t pt-4">
+                  <h4 class="font-semibold text-gray-800 mb-3">Radius Server (untuk autentikasi)</h4>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Radius Server IP</label>
+                      <input type="text" id="radiusIP" value="192.168.1.10"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Radius Port</label>
+                      <input type="number" id="radiusPort" value="1812"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Radius Secret</label>
+                      <input type="password" id="radiusSecret" value="netflowsecret123"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="border-t pt-4">
+                  <h4 class="font-semibold text-gray-800 mb-3">Monitoring Jaringan</h4>
+                  <label class="flex items-center gap-3 cursor-pointer mb-2">
+                    <input type="checkbox" id="monitoringAktif" checked class="w-4 h-4 text-blue-600 rounded">
+                    <span class="text-gray-700">Aktifkan monitoring jaringan real-time</span>
+                  </label>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Interval Ping (detik)</label>
+                      <input type="number" id="intervalPing" value="60"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">SNMP Community</label>
+                      <input type="text" id="snmpCommunity" value="public"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 4: MANAJEMEN PENGGUNA -->
+            <div class="hidden p-6" id="pengguna" role="tabpanel">
+              <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                  <i class='bx bx-group text-blue-600'></i> Daftar Pengguna Sistem
+                </h3>
+                <button onclick="tambahPengguna()"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-1">
+                  <i class='bx bx-plus'></i> Tambah Pengguna
+                </button>
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-gray-100 text-gray-700">
+                    <tr>
+                      <th class="px-4 py-3 text-left">Nama</th>
+                      <th class="px-4 py-3 text-left">Username</th>
+                      <th class="px-4 py-3 text-left">Email</th>
+                      <th class="px-4 py-3 text-left">Role</th>
+                      <th class="px-4 py-3 text-left">Status</th>
+                      <th class="px-4 py-3 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="penggunaTableBody" class="divide-y">
+                    <tr>
+                      <td class="px-4 py-3 font-medium">Ardi Network</td>
+                      <td class="px-4 py-3">ardinetwork</td>
+                      <td class="px-4 py-3">ardi@netflow.co.id</td>
+                      <td class="px-4 py-3"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">Super
+                          Admin</span></td>
+                      <td class="px-4 py-3"><span
+                          class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Aktif</span></td>
+                      <td class="px-4 py-3 text-center">
+                        <button onclick="editPengguna('ardi')" class="text-blue-600 hover:text-blue-800 mr-2"><i
+                            class='bx bx-edit'></i></button>
+                        <button onclick="resetPassword('ardi')" class="text-yellow-600 hover:text-yellow-800 mr-2"><i
+                            class='bx bx-key'></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-4 py-3 font-medium">Rina Anggraini</td>
+                      <td class="px-4 py-3">rina.admin</td>
+                      <td class="px-4 py-3">rina@netflow.co.id</td>
+                      <td class="px-4 py-3"><span
+                          class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">Admin</span></td>
+                      <td class="px-4 py-3"><span
+                          class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Aktif</span></td>
+                      <td class="px-4 py-3 text-center">
+                        <button onclick="editPengguna('rina')" class="text-blue-600 hover:text-blue-800 mr-2"><i
+                            class='bx bx-edit'></i></button>
+                        <button onclick="resetPassword('rina')" class="text-yellow-600 hover:text-yellow-800 mr-2"><i
+                            class='bx bx-key'></i></button>
+                        <button onclick="nonaktifkanPengguna('rina')" class="text-red-500 hover:text-red-700"><i
+                            class='bx bx-power-off'></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-4 py-3 font-medium">Budi Santoso</td>
+                      <td class="px-4 py-3">budi.cs</td>
+                      <td class="px-4 py-3">budi@netflow.co.id</td>
+                      <td class="px-4 py-3"><span
+                          class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs">CS</span></td>
+                      <td class="px-4 py-3"><span
+                          class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">Cuti</span></td>
+                      <td class="px-4 py-3 text-center">
+                        <button onclick="editPengguna('budi')" class="text-blue-600 hover:text-blue-800 mr-2"><i
+                            class='bx bx-edit'></i></button>
+                        <button onclick="resetPassword('budi')" class="text-yellow-600 hover:text-yellow-800 mr-2"><i
+                            class='bx bx-key'></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="mt-6 bg-gray-50 p-5 rounded-xl">
+                <h4 class="font-semibold text-gray-800 mb-3">Hak Akses Role</h4>
+                <div class="grid grid-cols-3 gap-4 text-sm">
+                  <div class="bg-white p-3 rounded-lg border">
+                    <p class="font-medium text-blue-700 mb-2">Super Admin</p>
+                    <p class="text-gray-600 text-xs">Akses penuh ke semua fitur, termasuk manajemen pengguna dan
+                      pengaturan sistem.</p>
+                  </div>
+                  <div class="bg-white p-3 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2">Admin</p>
+                    <p class="text-gray-600 text-xs">Akses ke customer, tagihan, saldo, dan laporan. Tidak bisa mengatur
+                      pengguna lain.</p>
+                  </div>
+                  <div class="bg-white p-3 rounded-lg border">
+                    <p class="font-medium text-gray-700 mb-2">CS (Customer Service)</p>
+                    <p class="text-gray-600 text-xs">Akses terbatas ke customer dan tagihan (view only). Tidak bisa
+                      edit/delete.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 5: NOTIFIKASI -->
+            <div class="hidden p-6" id="notifikasi" role="tabpanel">
+              <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <i class='bx bx-bell text-blue-600'></i> Pengaturan Notifikasi
+              </h3>
+
+              <div class="space-y-5">
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="font-semibold text-gray-800 mb-3">Notifikasi Email</h4>
+                  <div class="space-y-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="emailTagihanBaru" checked class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Tagihan baru dibuat</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="emailPembayaran" checked class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Pembayaran diterima</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="emailJatuhTempo" checked class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Tagihan jatuh tempo</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="emailPelangganBaru" class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Pelanggan baru terdaftar</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="font-semibold text-gray-800 mb-3">Notifikasi Sistem</h4>
+                  <div class="space-y-3">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="notifJaringanDown" checked class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Jaringan down / gangguan</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="notifBackup" class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Backup database berhasil/gagal</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                      <input type="checkbox" id="notifLogin" checked class="w-4 h-4 text-blue-600 rounded">
+                      <span class="text-gray-700">Login dari perangkat baru</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 p-5 rounded-xl">
+                  <h4 class="font-semibold text-gray-800 mb-3">Konfigurasi Email Server</h4>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">SMTP Host</label>
+                      <input type="text" id="smtpHost" value="smtp.gmail.com"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">SMTP Port</label>
+                      <input type="number" id="smtpPort" value="587"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Username Email</label>
+                      <input type="email" id="smtpUser" value="noreply@netflow.co.id"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                      <input type="password" id="smtpPass" value="••••••••••••"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="block text-sm font-medium text-gray-700 mb-1">Email Pengirim (From)</label>
+                      <input type="email" id="emailFrom" value="NetFlow WiFi <noreply@netflow.co.id>"
+                        class="w-full border border-gray-300 rounded-lg p-2.5">
+                    </div>
+                  </div>
+                  <button onclick="tesEmail()"
+                    class="mt-3 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-1">
+                    <i class='bx bx-envelope'></i> Tes Kirim Email
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+  <script>
+    // Inisialisasi tabs Flowbite
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabsElement = document.getElementById('pengaturanTabs');
+      if (tabsElement) {
+        new Flowbite.Tabs(tabsElement);
+      }
+    });
+
+    // Fungsi-fungsi pengaturan
+    window.simpanSemuaPengaturan = () => {
+      Swal.fire({
+        title: 'Simpan Pengaturan?',
+        text: 'Semua perubahan akan disimpan dan diterapkan.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Simpan',
+        confirmButtonColor: '#2563eb'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('Berhasil!', 'Semua pengaturan telah disimpan.', 'success');
+        }
+      });
+    };
+
+    window.gantiFoto = () => {
+      Swal.fire({
+        title: 'Ganti Foto Profil',
+        text: 'Fitur upload foto akan segera hadir.',
+        icon: 'info'
+      });
+    };
+
+    window.tambahPengguna = () => {
+      Swal.fire({
+        title: 'Tambah Pengguna Baru',
+        html: `
+        <input id="newName" class="swal2-input" placeholder="Nama Lengkap">
+        <input id="newUser" class="swal2-input" placeholder="Username">
+        <input id="newEmail" class="swal2-input" placeholder="Email">
+        <select id="newRole" class="swal2-select" style="width:100%; margin:8px 0; padding:8px;">
+          <option>Admin</option>
+          <option>CS</option>
+        </select>
+      `,
+        confirmButtonText: 'Tambah',
+        preConfirm: () => {
+          const name = document.getElementById('newName').value;
+          const user = document.getElementById('newUser').value;
+          if (!name || !user) {
+            Swal.showValidationMessage('Nama dan username harus diisi');
+          }
+          return { name, user };
+        }
+      }).then((res) => {
+        if (res.isConfirmed) {
+          Swal.fire('Berhasil', 'Pengguna baru telah ditambahkan.', 'success');
+        }
+      });
+    };
+
+    window.editPengguna = (user) => {
+      Swal.fire({
+        title: 'Edit Pengguna',
+        text: `Mengedit pengguna: ${user}`,
+        icon: 'info'
+      });
+    };
+
+    window.resetPassword = (user) => {
+      Swal.fire({
+        title: 'Reset Password',
+        text: `Reset password untuk ${user}? Password baru akan dikirim ke email.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Reset'
+      }).then((res) => {
+        if (res.isConfirmed) {
+          Swal.fire('Berhasil', 'Link reset password telah dikirim ke email.', 'success');
+        }
+      });
+    };
+
+    window.nonaktifkanPengguna = (user) => {
+      Swal.fire({
+        title: 'Nonaktifkan Pengguna?',
+        text: `Pengguna ${user} tidak akan bisa login.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Nonaktifkan'
+      }).then((res) => {
+        if (res.isConfirmed) {
+          Swal.fire('Dinonaktifkan', `Pengguna ${user} telah dinonaktifkan.`, 'success');
+        }
+      });
+    };
+
+    window.tesEmail = () => {
+      Swal.fire({
+        title: 'Tes Kirim Email',
+        text: 'Email percobaan akan dikirim ke alamat admin.',
+        icon: 'info',
+        confirmButtonText: 'Kirim'
+      }).then((res) => {
+        if (res.isConfirmed) {
+          Swal.fire('Terkirim', 'Email percobaan telah dikirim.', 'success');
+        }
+      });
+    };
+  </script>
+</body>
+
+</html>

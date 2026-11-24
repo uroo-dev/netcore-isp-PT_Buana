@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan • NetFlow WiFi</title>
+  <!-- Tailwind + Flowbite + BoxIcons + Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      .print-area,
+      .print-area * {
+        visibility: visible;
+      }
+
+      .print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    /* Perbaikan untuk tabs Flowbite */
+    [data-tabs-target] {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans antialiased">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-72 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl no-print">
+      <!-- Brand -->
+      <div class="flex items-center gap-3 px-5 py-6 border-b border-blue-700/60">
+        <div class=" rounded-xl  shadow-md">
+          <img src="./images/logo-buana.png" alt="Logo Buana" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Buana<span class="text-yellow-300">Net</span></h1>
+          <p class="text-xs text-blue-200 -mt-1">Admin Console</p>
+        </div>
+      </div>
+      <div class="px-5 py-4 flex items-center gap-3 border-b border-blue-700/40">
+        <img class="w-10 h-10 rounded-full ring-2 ring-yellow-300 object-cover"
+          src="https://ui-avatars.com/api/?name=Admin+WiFi&background=fbbf24&color=1e3a8a&bold=true" alt="admin">
+        <div class="text-sm">
+          <p class="font-semibold">Ardi Network</p>
+          <p class="text-blue-200 text-xs flex items-center gap-1"><i
+              class='bx bx-badge-check text-yellow-300'></i>Super Admin</p>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <a href="index.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60"><i
+            class='bx bxs-dashboard text-xl'></i><span>Dashboard</span></a>
+        <a href="customer.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60"><i
+            class='bx bxs-user-detail text-xl'></i><span>Customer</span></a>
+        <a href="tagihan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60"><i
+            class='bx bxs-receipt text-xl'></i><span>Tagihan</span></a>
+        <a href="saldo.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60"><i
+            class='bx bxs-wallet text-xl'></i><span>Saldo</span></a>
+        <a href="laporan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-blue-700/70 shadow-md"><i
+            class='bx bxs-bar-chart-square text-xl text-yellow-300'></i><span>Laporan</span></a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <header
+        class="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-gray-200 no-print">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Laporan Keuangan <span
+              class="text-blue-600 text-base font-normal ml-2">| Standar Akuntansi</span></h2>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="flex gap-2">
+            <button onclick="exportLaporan('pdf')"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow"><i
+                class='bx bxs-file-pdf'></i>PDF</button>
+            <button onclick="exportLaporan('excel')"
+              class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow"><i
+                class='bx bx-table'></i>Excel</button>
+            <button onclick="cetakLaporan()"
+              class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow"><i
+                class='bx bx-printer'></i>Cetak</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="p-6 space-y-6 print-area">
+        <!-- FILTER & RINGKASAN -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-5 no-print">
+          <div class="flex flex-wrap items-end gap-4 mb-4">
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Periode</label>
+              <select id="periodeFilter" class="border rounded-lg p-2.5 bg-gray-50 min-w-[150px]">
+                <option value="bulan-ini">Bulan Ini (April 2025)</option>
+                <option value="bulan-lalu">Maret 2025</option>
+                <option value="3bulan">3 Bulan Terakhir</option>
+                <option value="tahun-ini">Tahun 2025</option>
+              </select>
+            </div>
+            <button onclick="applyFilter()"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg flex items-center gap-2"><i
+                class='bx bx-filter-alt'></i>Terapkan</button>
+            <span class="ml-auto text-sm text-gray-500" id="rangeDisplay">Periode: April 2025</span>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div class="bg-blue-50 p-4 rounded-xl">
+              <p class="text-gray-600 text-xs">Total Pendapatan</p>
+              <p class="text-xl font-bold text-green-700" id="sumPendapatan">Rp 23.450.000</p>
+            </div>
+            <div class="bg-red-50 p-4 rounded-xl">
+              <p class="text-gray-600 text-xs">Total Beban</p>
+              <p class="text-xl font-bold text-red-600" id="sumBeban">Rp 6.650.000</p>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-xl">
+              <p class="text-gray-600 text-xs">Laba Bersih</p>
+              <p class="text-xl font-bold text-blue-700" id="sumLaba">Rp 16.800.000</p>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-xl">
+              <p class="text-gray-600 text-xs">Total Piutang</p>
+              <p class="text-xl font-bold text-orange-600" id="sumPiutang">Rp 7.200.000</p>
+            </div>
+            <div class="bg-emerald-50 p-4 rounded-xl">
+              <p class="text-gray-600 text-xs">Saldo Kas Akhir</p>
+              <p class="text-xl font-bold text-emerald-700" id="sumSaldoAkhir">Rp 56.300.000</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRAFIK -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-5">
+          <h3 class="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2"><i
+              class='bx bx-line-chart text-blue-600'></i> Grafik Analisis Keuangan (6 Bulan)</h3>
+          <div class="h-72"><canvas id="financeChart"></canvas></div>
+        </div>
+
+        <!-- TABS LAPORAN - DIPERBAIKI -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+          <div class="border-b border-gray-200 no-print">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium" id="laporanTabs" data-tabs-toggle="#laporanTabContent"
+              role="tablist">
+              <li class="mr-2" role="presentation">
+                <button class="inline-flex items-center gap-2 p-4 border-b-2 rounded-t-lg text-blue-600 border-blue-600"
+                  id="arus-kas-tab" data-tabs-target="#arus-kas" type="button" role="tab" aria-controls="arus-kas"
+                  aria-selected="true">
+                  <i class='bx bx-transfer-alt'></i>Arus Kas
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="labarugi-tab" data-tabs-target="#labarugi" type="button" role="tab" aria-controls="labarugi"
+                  aria-selected="false">
+                  <i class='bx bx-line-chart'></i>Laba Rugi
+                </button>
+              </li>
+              <li class="mr-2" role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="piutang-tab" data-tabs-target="#piutang" type="button" role="tab" aria-controls="piutang"
+                  aria-selected="false">
+                  <i class='bx bx-credit-card'></i>Piutang Pelanggan
+                </button>
+              </li>
+              <li role="presentation">
+                <button
+                  class="inline-flex items-center gap-2 p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                  id="pembelian-tab" data-tabs-target="#pembelian" type="button" role="tab" aria-controls="pembelian"
+                  aria-selected="false">
+                  <i class='bx bx-package'></i>Pembelian Barang
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Konten Tabs -->
+          <div id="laporanTabContent">
+            <!-- ARUS KAS -->
+            <div class="p-5" id="arus-kas" role="tabpanel" aria-labelledby="arus-kas-tab">
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-gray-50 text-gray-700 border-b">
+                    <tr>
+                      <th class="px-4 py-3">Tanggal</th>
+                      <th class="px-4 py-3">Keterangan</th>
+                      <th class="px-4 py-3">Ref</th>
+                      <th class="px-4 py-3">Debit (Masuk)</th>
+                      <th class="px-4 py-3">Kredit (Keluar)</th>
+                      <th class="px-4 py-3">Saldo</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y" id="arusKasBody"></tbody>
+                  <tfoot class="bg-gray-100 font-semibold">
+                    <tr>
+                      <td colspan="3" class="px-4 py-3 text-right">Total</td>
+                      <td id="totalDebitFoot" class="px-4 py-3 text-green-700"></td>
+                      <td id="totalKreditFoot" class="px-4 py-3 text-red-600"></td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+
+            <!-- LABA RUGI (AKUNTANSI STANDAR) -->
+            <div class="hidden p-5" id="labarugi" role="tabpanel" aria-labelledby="labarugi-tab">
+              <div class="max-w-3xl mx-auto">
+                <h4 class="font-bold text-xl mb-6 text-center">Laporan Laba Rugi (April 2025)</h4>
+                <div class="space-y-3" id="labarugiContent"></div>
+                <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+                  <h5 class="font-semibold mb-3">Analisis Profitabilitas</h5>
+                  <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <p class="text-xs text-gray-500">Gross Profit Margin</p>
+                      <p class="text-xl font-bold text-blue-600" id="grossMargin">78.2%</p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Net Profit Margin</p>
+                      <p class="text-xl font-bold text-green-600" id="netMargin">65.8%</p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-500">Operating Ratio</p>
+                      <p class="text-xl font-bold text-purple-600" id="operatingRatio">34.2%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PIUTANG PELANGGAN -->
+            <div class="hidden p-5" id="piutang" role="tabpanel" aria-labelledby="piutang-tab">
+              <div class="mb-4 grid grid-cols-3 gap-4">
+                <div class="bg-yellow-50 p-3 rounded-lg">
+                  <p class="text-xs">Total Piutang</p>
+                  <p class="text-xl font-bold" id="totalPiutangVal">Rp 7.200.000</p>
+                </div>
+                <div class="bg-orange-50 p-3 rounded-lg">
+                  <p class="text-xs">Jatuh Tempo < 7 hari</p>
+                      <p class="text-xl font-bold text-orange-600" id="jatuhTempoDekat">Rp 3.800.000</p>
+                </div>
+                <div class="bg-red-50 p-3 rounded-lg">
+                  <p class="text-xs">Menunggak > 30 hari</p>
+                  <p class="text-xl font-bold text-red-600" id="menunggakLama">Rp 0</p>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th class="px-4 py-3">Pelanggan</th>
+                      <th class="px-4 py-3">No. Invoice</th>
+                      <th class="px-4 py-3">Jatuh Tempo</th>
+                      <th class="px-4 py-3">Total</th>
+                      <th class="px-4 py-3">Dibayar</th>
+                      <th class="px-4 py-3">Kurang</th>
+                      <th class="px-4 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="piutangBody" class="divide-y"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PEMBELIAN BARANG -->
+            <div class="hidden p-5" id="pembelian" role="tabpanel" aria-labelledby="pembelian-tab">
+              <div class="mb-4 grid grid-cols-3 gap-4">
+                <div class="bg-blue-50 p-3 rounded-lg">
+                  <p class="text-xs">Total Pembelian</p>
+                  <p class="text-xl font-bold" id="totalPembelianVal">Rp 5.900.000</p>
+                </div>
+                <div class="bg-indigo-50 p-3 rounded-lg">
+                  <p class="text-xs">Supplier Utama</p>
+                  <p class="text-lg font-semibold" id="topSupplier">Toko Jaya</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-lg">
+                  <p class="text-xs">Item Terbanyak</p>
+                  <p class="text-lg font-semibold" id="topItem">Router WiFi 6</p>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th class="px-4 py-3">Tanggal</th>
+                      <th class="px-4 py-3">Supplier</th>
+                      <th class="px-4 py-3">Barang</th>
+                      <th class="px-4 py-3">Qty</th>
+                      <th class="px-4 py-3">Harga Satuan</th>
+                      <th class="px-4 py-3">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pembelianBody" class="divide-y"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+  <script>
+    // Data sesuai standar akuntansi
+    const jurnalUmum = [
+      { tgl: '2025-04-01', ket: 'Pembayaran Tagihan INV-001', ref: 'INV-001', debet: 1300000, kredit: 0, kategori: 'pendapatan_jasa' },
+      { tgl: '2025-04-02', ket: 'Pembelian Router (Toko Jaya)', ref: 'PO-001', debet: 0, kredit: 4250000, kategori: 'pembelian_inventaris' },
+      { tgl: '2025-04-03', ket: 'Pembayaran Tagihan INV-002 (Cicilan)', ref: 'INV-002', debet: 1200000, kredit: 0, kategori: 'pendapatan_jasa' },
+      { tgl: '2025-04-05', ket: 'Pembelian Kabel UTP & Konektor', ref: 'PO-002', debet: 0, kredit: 750000, kategori: 'beban_operasional' },
+      { tgl: '2025-04-07', ket: 'Pendapatan Pemasangan Baru', ref: 'SRV-001', debet: 15000000, kredit: 0, kategori: 'pendapatan_jasa' },
+      { tgl: '2025-04-10', ket: 'Pembayaran Gaji Karyawan', ref: 'PAY-001', debet: 0, kredit: 4500000, kategori: 'beban_gaji' },
+      { tgl: '2025-04-12', ket: 'Pembelian Switch (Global Tech)', ref: 'PO-003', debet: 0, kredit: 900000, kategori: 'pembelian_inventaris' },
+      { tgl: '2025-04-15', ket: 'Pendapatan Bulanan WiFi', ref: 'INV-BULK', debet: 8500000, kredit: 0, kategori: 'pendapatan_jasa' },
+      { tgl: '2025-04-18', ket: 'Biaya Listrik & Internet', ref: 'UTIL-001', debet: 0, kredit: 1200000, kategori: 'beban_utilitas' },
+      { tgl: '2025-04-20', ket: 'Pembayaran Piutang CV. Cahaya', ref: 'INV-006', debet: 3000000, kredit: 0, kategori: 'pendapatan_jasa' },
+    ];
+
+    const piutangData = [
+      { pelanggan: 'PT. Maju Jaya', invoice: 'INV-002', jatuhTempo: '2025-05-03', total: 2450000, dibayar: 1200000, kurang: 1250000, status: 'Cicilan' },
+      { pelanggan: 'Dinas Pendidikan', invoice: 'INV-004', jatuhTempo: '2025-04-25', total: 3800000, dibayar: 0, kurang: 3800000, status: 'Belum' },
+      { pelanggan: 'Andi Susanto', invoice: 'INV-005', jatuhTempo: '2025-05-10', total: 950000, dibayar: 0, kurang: 950000, status: 'Belum' },
+      { pelanggan: 'CV. Cahaya Net', invoice: 'INV-006', jatuhTempo: '2025-04-15', total: 4200000, dibayar: 3000000, kurang: 1200000, status: 'Cicilan' },
+    ];
+
+    const pembelianDetail = [
+      { tgl: '2025-04-02', supplier: 'Toko Jaya', barang: 'Router WiFi 6', qty: 2, harga: 850000, total: 1700000 },
+      { tgl: '2025-04-02', supplier: 'Toko Jaya', barang: 'Access Point', qty: 3, harga: 850000, total: 2550000 },
+      { tgl: '2025-04-05', supplier: 'Toko Makmur', barang: 'Kabel UTP 50m', qty: 5, harga: 150000, total: 750000 },
+      { tgl: '2025-04-12', supplier: 'Global Tech', barang: 'Switch 8 Port', qty: 2, harga: 450000, total: 900000 },
+    ];
+
+    const saldoAwal = 42850000;
+    let chartInstance;
+
+    // Render Arus Kas
+    function renderArusKas() {
+      let saldo = saldoAwal;
+      const sorted = [...jurnalUmum].sort((a, b) => new Date(a.tgl) - new Date(b.tgl));
+      let totalDebet = 0, totalKredit = 0;
+      document.getElementById('arusKasBody').innerHTML = sorted.map(m => {
+        saldo = saldo + m.debet - m.kredit;
+        totalDebet += m.debet; totalKredit += m.kredit;
+        return `<tr><td>${new Date(m.tgl).toLocaleDateString('id')}</td><td>${m.ket}</td><td>${m.ref}</td><td class="text-green-600">${m.debet ? 'Rp ' + m.debet.toLocaleString('id') : '-'}</td><td class="text-red-500">${m.kredit ? 'Rp ' + m.kredit.toLocaleString('id') : '-'}</td><td>Rp ${saldo.toLocaleString('id')}</td></tr>`;
+      }).join('');
+      document.getElementById('totalDebitFoot').innerText = 'Rp ' + totalDebet.toLocaleString('id');
+      document.getElementById('totalKreditFoot').innerText = 'Rp ' + totalKredit.toLocaleString('id');
+      document.getElementById('sumSaldoAkhir').innerText = 'Rp ' + saldo.toLocaleString('id');
+      return { totalDebet, totalKredit, saldo };
+    }
+
+    // Render Laba Rugi (Akuntansi Standar)
+    function renderLabaRugi() {
+      const pendapatan = jurnalUmum.filter(j => j.kategori === 'pendapatan_jasa').reduce((s, j) => s + j.debet, 0);
+      const bebanGaji = jurnalUmum.filter(j => j.kategori === 'beban_gaji').reduce((s, j) => s + j.kredit, 0);
+      const bebanUtilitas = jurnalUmum.filter(j => j.kategori === 'beban_utilitas').reduce((s, j) => s + j.kredit, 0);
+      const bebanOperasional = jurnalUmum.filter(j => j.kategori === 'beban_operasional').reduce((s, j) => s + j.kredit, 0);
+      const pembelianInventaris = jurnalUmum.filter(j => j.kategori === 'pembelian_inventaris').reduce((s, j) => s + j.kredit, 0);
+
+      const totalBeban = bebanGaji + bebanUtilitas + bebanOperasional;
+      const labaKotor = pendapatan; // Untuk jasa, pendapatan = laba kotor
+      const labaBersih = pendapatan - totalBeban;
+
+      // Margin
+      const grossMargin = pendapatan > 0 ? ((labaKotor / pendapatan) * 100).toFixed(1) : 0;
+      const netMargin = pendapatan > 0 ? ((labaBersih / pendapatan) * 100).toFixed(1) : 0;
+      const operatingRatio = pendapatan > 0 ? ((totalBeban / pendapatan) * 100).toFixed(1) : 0;
+
+      document.getElementById('labarugiContent').innerHTML = `
+      <div class="bg-blue-50 p-4 rounded-xl"><h5 class="font-semibold mb-2">PENDAPATAN</h5>
+        <div class="flex justify-between"><span>Pendapatan Jasa WiFi</span><span>Rp ${pendapatan.toLocaleString('id')}</span></div>
+        <div class="flex justify-between font-bold mt-2 pt-2 border-t"><span>Total Pendapatan</span><span>Rp ${pendapatan.toLocaleString('id')}</span></div>
+      </div>
+      <div class="bg-red-50 p-4 rounded-xl"><h5 class="font-semibold mb-2">BEBAN OPERASIONAL</h5>
+        <div class="flex justify-between"><span>Beban Gaji</span><span>Rp ${bebanGaji.toLocaleString('id')}</span></div>
+        <div class="flex justify-between"><span>Beban Utilitas</span><span>Rp ${bebanUtilitas.toLocaleString('id')}</span></div>
+        <div class="flex justify-between"><span>Beban Operasional Lain</span><span>Rp ${bebanOperasional.toLocaleString('id')}</span></div>
+        <div class="flex justify-between font-bold mt-2 pt-2 border-t"><span>Total Beban Operasional</span><span>Rp ${totalBeban.toLocaleString('id')}</span></div>
+      </div>
+      <div class="bg-green-100 p-4 rounded-xl flex justify-between text-lg font-bold"><span>LABA BERSIH</span><span>Rp ${labaBersih.toLocaleString('id')}</span></div>
+      <div class="text-sm text-gray-500 mt-2">* Pembelian inventaris (Rp ${pembelianInventaris.toLocaleString('id')}) dicatat sebagai aset, bukan beban.</div>
+    `;
+
+      document.getElementById('grossMargin').innerText = grossMargin + '%';
+      document.getElementById('netMargin').innerText = netMargin + '%';
+      document.getElementById('operatingRatio').innerText = operatingRatio + '%';
+
+      document.getElementById('sumPendapatan').innerText = 'Rp ' + pendapatan.toLocaleString('id');
+      document.getElementById('sumBeban').innerText = 'Rp ' + totalBeban.toLocaleString('id');
+      document.getElementById('sumLaba').innerText = 'Rp ' + labaBersih.toLocaleString('id');
+    }
+
+    // Render Piutang
+    function renderPiutang() {
+      const total = piutangData.reduce((s, p) => s + p.kurang, 0);
+      document.getElementById('totalPiutangVal').innerText = 'Rp ' + total.toLocaleString('id');
+      document.getElementById('sumPiutang').innerText = 'Rp ' + total.toLocaleString('id');
+      document.getElementById('piutangBody').innerHTML = piutangData.map(p => `
+      <tr><td>${p.pelanggan}</td><td>${p.invoice}</td><td>${p.jatuhTempo}</td><td>Rp ${p.total.toLocaleString()}</td><td>Rp ${p.dibayar.toLocaleString()}</td><td class="text-red-600">Rp ${p.kurang.toLocaleString()}</td><td><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">${p.status}</span></td></tr>
+    `).join('');
+    }
+
+    // Render Pembelian
+    function renderPembelian() {
+      const total = pembelianDetail.reduce((s, b) => s + b.total, 0);
+      document.getElementById('totalPembelianVal').innerText = 'Rp ' + total.toLocaleString('id');
+      document.getElementById('pembelianBody').innerHTML = pembelianDetail.map(b => `
+      <tr><td>${b.tgl}</td><td>${b.supplier}</td><td>${b.barang}</td><td>${b.qty}</td><td>Rp ${b.harga.toLocaleString()}</td><td>Rp ${b.total.toLocaleString()}</td></tr>
+    `).join('');
+    }
+
+    function updateChart() {
+      const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
+      const pemasukan = [12.5, 14.8, 15.2, 23.45, 0, 0];
+      const pengeluaran = [3.2, 4.1, 3.8, 6.65, 0, 0];
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(document.getElementById('financeChart'), {
+        type: 'line', data: {
+          labels: bulan, datasets: [
+            { label: 'Pemasukan (Juta Rp)', data: pemasukan, borderColor: '#10b981', tension: 0.3 },
+            { label: 'Pengeluaran (Juta Rp)', data: pengeluaran, borderColor: '#ef4444', tension: 0.3 }
+          ]
+        }, options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    function renderAll() {
+      renderArusKas();
+      renderLabaRugi();
+      renderPiutang();
+      renderPembelian();
+      updateChart();
+    }
+
+    window.applyFilter = () => Swal.fire('Filter', 'Data ditampilkan untuk periode yang dipilih', 'success');
+    window.exportLaporan = (type) => {
+      const activeTab = document.querySelector('#laporanTabContent > div:not(.hidden)')?.id || 'arus-kas';
+      Swal.fire({ title: 'Ekspor Laporan', text: `Laporan ${activeTab} diekspor sebagai ${type.toUpperCase()}`, icon: 'success' });
+    };
+    window.cetakLaporan = () => window.print();
+
+    // Inisialisasi dengan perbaikan tabs
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAll();
+
+      // Setup tabs manual untuk memastikan berfungsi
+      const tabsElement = document.getElementById('laporanTabs');
+      if (tabsElement) {
+        const tabs = new Flowbite.Tabs(tabsElement);
+
+        // Tambahan: memastikan tab bisa diklik
+        document.querySelectorAll('[data-tabs-target]').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const target = this.getAttribute('data-tabs-target');
+            document.querySelectorAll('#laporanTabContent > div').forEach(pane => pane.classList.add('hidden'));
+            document.querySelector(target).classList.remove('hidden');
+
+            // Update active state
+            document.querySelectorAll('[data-tabs-target]').forEach(b => {
+              b.classList.remove('text-blue-600', 'border-blue-600');
+              b.classList.add('border-transparent');
+            });
+            this.classList.add('text-blue-600', 'border-blue-600');
+            this.classList.remove('border-transparent');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

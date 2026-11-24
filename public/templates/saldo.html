@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saldo • NetFlow WiFi</title>
+  <!-- Tailwind + Flowbite + BoxIcons + Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* no extra style */
+  </style>
+</head>
+
+<body class="bg-gray-50 font-sans antialiased">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR (konsisten biru + aksen kuning) -->
+    <aside class="w-72 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl">
+      <div class="flex items-center gap-3 px-5 py-6 border-b border-blue-700/60">
+        <div class=" rounded-xl  shadow-md">
+          <img src="./images/logo-buana.png" alt="Logo Buana" class="w-16 h-16 object-contain">
+        </div>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Buana<span class="text-yellow-300">Net</span></h1>
+          <p class="text-xs text-blue-200 -mt-1">Admin Console</p>
+        </div>
+      </div>
+      <div class="px-5 py-4 flex items-center gap-3 border-b border-blue-700/40">
+        <img class="w-10 h-10 rounded-full ring-2 ring-yellow-300 object-cover"
+          src="https://ui-avatars.com/api/?name=Admin+WiFi&background=fbbf24&color=1e3a8a&bold=true" alt="admin">
+        <div class="text-sm">
+          <p class="font-semibold">Ardi Network</p>
+          <p class="text-blue-200 text-xs flex items-center gap-1"><i
+              class='bx bx-badge-check text-yellow-300'></i>Super Admin</p>
+        </div>
+      </div>
+      <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <a href="index.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all"><i
+            class='bx bxs-dashboard text-xl'></i><span>Dashboard</span></a>
+        <a href="customer.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all"><i
+            class='bx bxs-user-detail text-xl'></i><span>Customer</span></a>
+        <a href="tagihan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all"><i
+            class='bx bxs-receipt text-xl'></i><span>Tagihan</span></a>
+        <a href="saldo.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-blue-700/70 shadow-md transition-all"><i
+            class='bx bxs-wallet text-xl text-yellow-300'></i><span>Saldo</span></a>
+        <a href="laporan.html"
+          class="nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60 transition-all"><i
+            class='bx bxs-bar-chart-square text-xl'></i><span>Laporan</span></a>
+        <div class="pt-6 mt-4 border-t border-blue-700/40"></div>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-100 hover:bg-blue-800/60"><i
+            class='bx bx-cog'></i><span>Pengaturan</span></a>
+      </nav>
+      <div class="p-4 border-t border-blue-700/40">
+        <div class="bg-blue-950/40 p-3 rounded-xl text-xs text-blue-200 flex items-center gap-2"><i
+            class='bx bx-server text-yellow-300 text-lg'></i><span>Gateway • Online <span
+              class="inline-block w-2 h-2 bg-green-400 rounded-full ml-1"></span></span></div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <header
+        class="bg-white shadow-sm sticky top-0 z-10 px-6 py-4 flex items-center justify-between border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-gray-800">Manajemen Saldo <span
+              class="text-blue-600 text-base font-normal ml-2">| Arus Kas</span></h2>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="flex gap-2">
+            <button data-modal-target="uangMasukModal" data-modal-toggle="uangMasukModal"
+              class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow transition"><i
+                class='bx bx-plus-circle'></i>Uang Masuk</button>
+            <button data-modal-target="uangKeluarModal" data-modal-toggle="uangKeluarModal"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-1 shadow transition"><i
+                class='bx bx-minus-circle'></i>Uang Keluar</button>
+          </div>
+          <img class="w-9 h-9 rounded-full ring-2 ring-blue-200"
+            src="https://ui-avatars.com/api/?name=Ardi+N&background=1e3a8a&color=fbbf24" alt="user">
+        </div>
+      </header>
+
+      <div class="p-6 space-y-6">
+        <!-- STATISTIK SALDO -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+          <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-blue-600">
+            <p class="text-gray-500 text-sm">Saldo Saat Ini</p>
+            <h3 class="text-3xl font-bold text-gray-800" id="saldoSaatIni">Rp 42.850.000</h3>
+            <span class="text-green-600 text-xs flex items-center gap-1 mt-1"><i class='bx bx-up-arrow-alt'></i> +12.5%
+              dari bulan lalu</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-green-500">
+            <p class="text-gray-500 text-sm">Total Pemasukan (Bulan Ini)</p>
+            <h3 class="text-3xl font-bold text-gray-800" id="totalPemasukan">Rp 18.250.000</h3>
+            <span class="text-gray-500 text-xs">Dari 12 transaksi</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-red-500">
+            <p class="text-gray-500 text-sm">Total Pengeluaran (Bulan Ini)</p>
+            <h3 class="text-3xl font-bold text-gray-800" id="totalPengeluaran">Rp 5.420.000</h3>
+            <span class="text-gray-500 text-xs">Untuk 4 pembelian</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-yellow-400">
+            <p class="text-gray-500 text-sm">Piutang Tagihan</p>
+            <h3 class="text-3xl font-bold text-gray-800" id="piutangTagihan">Rp 12.380.000</h3>
+            <span class="text-yellow-600 text-xs">Belum dibayar pelanggan</span>
+          </div>
+        </div>
+
+        <!-- GRAFIK BULANAN -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-5">
+          <h3 class="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2"><i
+              class='bx bx-line-chart text-blue-600'></i> Grafik Arus Kas Bulanan (6 Bulan Terakhir)</h3>
+          <div class="h-72">
+            <canvas id="cashFlowChart"></canvas>
+          </div>
+        </div>
+
+        <!-- TABEL REKAP SALDO & MUTASI -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-5">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2"><i
+                class='bx bx-history text-blue-600'></i> Buku Kas / Mutasi Saldo</h3>
+            <div class="flex gap-2">
+              <button onclick="filterMutasi('all')"
+                class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg">Semua</button>
+              <button onclick="filterMutasi('masuk')"
+                class="text-xs bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded-lg">Uang
+                Masuk</button>
+              <button onclick="filterMutasi('keluar')"
+                class="text-xs bg-red-100 text-red-700 hover:bg-red-200 px-3 py-1.5 rounded-lg">Uang Keluar</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="mutasiTable">
+              <thead class="bg-gray-50 text-gray-700 border-b">
+                <tr>
+                  <th class="px-4 py-3 text-left">Tanggal</th>
+                  <th class="px-4 py-3 text-left">Keterangan</th>
+                  <th class="px-4 py-3 text-left">Kategori</th>
+                  <th class="px-4 py-3 text-left">Debit (Masuk)</th>
+                  <th class="px-4 py-3 text-left">Kredit (Keluar)</th>
+                  <th class="px-4 py-3 text-left">Saldo</th>
+                  <th class="px-4 py-3 text-left">Admin</th>
+                </tr>
+              </thead>
+              <tbody id="mutasiTableBody" class="divide-y"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL UANG MASUK -->
+  <div id="uangMasukModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-lg max-h-full">
+      <div class="relative bg-white rounded-2xl shadow">
+        <div class="flex items-center justify-between p-4 border-b">
+          <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-2"><i
+              class='bx bx-trending-up text-green-600'></i> Catat Uang Masuk</h3>
+          <button type="button" class="text-gray-400 hover:bg-gray-200 rounded-lg p-1"
+            data-modal-hide="uangMasukModal"><i class='bx bx-x text-xl'></i></button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div><label class="block text-sm font-medium mb-1">Sumber Dana</label><select id="sumberDana"
+              class="w-full border rounded-lg p-2.5">
+              <option>Pembayaran Tagihan</option>
+              <option>Deposit Pelanggan</option>
+              <option>Penjualan Alat</option>
+              <option>Pendapatan Lain</option>
+            </select></div>
+          <div><label class="block text-sm font-medium mb-1">Dari Pelanggan (opsional)</label><input type="text"
+              id="dariPelanggan" class="w-full border rounded-lg p-2.5" placeholder="Nama pelanggan"></div>
+          <div><label class="block text-sm font-medium mb-1">Nominal (Rp)</label><input type="number" id="nominalMasuk"
+              class="w-full border rounded-lg p-2.5" placeholder="Jumlah"></div>
+          <div><label class="block text-sm font-medium mb-1">Keterangan</label><textarea id="ketMasuk"
+              class="w-full border rounded-lg p-2.5" placeholder="Detail transaksi"></textarea></div>
+        </div>
+        <div class="flex items-center p-4 border-t"><button onclick="simpanUangMasuk()"
+            class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-2.5">Simpan</button><button
+            data-modal-hide="uangMasukModal" type="button"
+            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border">Batal</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL UANG KELUAR (PEMBELIAN ALAT) -->
+  <div id="uangKeluarModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-3xl max-h-full">
+      <div class="relative bg-white rounded-2xl shadow">
+        <div class="flex items-center justify-between p-4 border-b">
+          <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-2"><i
+              class='bx bx-package text-red-500'></i> Catat Uang Keluar (Pembelian Alat/Barang)</h3>
+          <button type="button" class="text-gray-400 hover:bg-gray-200 rounded-lg p-1"
+            data-modal-hide="uangKeluarModal"><i class='bx bx-x text-xl'></i></button>
+        </div>
+        <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="block text-sm font-medium mb-1">Supplier / Toko</label><input type="text" id="supplier"
+                class="w-full border rounded-lg p-2.5" placeholder="Nama toko/supplier"></div>
+            <div><label class="block text-sm font-medium mb-1">No. Faktur (opsional)</label><input type="text"
+                id="noFaktur" class="w-full border rounded-lg p-2.5" placeholder="INV/PO"></div>
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="font-semibold text-gray-700">Daftar Barang</h4><button onclick="addBarangItem()"
+                class="text-sm bg-yellow-400 hover:bg-yellow-500 text-blue-900 px-3 py-1.5 rounded-lg"><i
+                  class='bx bx-plus'></i>Tambah Barang</button>
+            </div>
+            <div class="border rounded-lg overflow-hidden">
+              <table class="w-full text-sm" id="barangTable">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="px-3 py-2 text-left">Nama Barang</th>
+                    <th class="px-3 py-2 text-left w-20">Qty</th>
+                    <th class="px-3 py-2 text-left">Harga Satuan</th>
+                    <th class="px-3 py-2 text-left">Total</th>
+                    <th class="w-10"></th>
+                  </tr>
+                </thead>
+                <tbody id="barangItemsBody"></tbody>
+              </table>
+            </div>
+            <div class="text-right mt-2 font-bold text-lg" id="totalBarangDisplay">Total: Rp 0</div>
+          </div>
+          <div><label class="block text-sm font-medium mb-1">Keterangan Tambahan</label><textarea id="ketKeluar"
+              class="w-full border rounded-lg p-2.5" placeholder="Catatan pembelian"></textarea></div>
+        </div>
+        <div class="flex items-center p-4 border-t"><button onclick="simpanUangKeluar()"
+            class="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5">Simpan
+            Pengeluaran</button><button data-modal-hide="uangKeluarModal" type="button"
+            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 bg-white rounded-lg border">Batal</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+  <script>
+    // ---------- DATA SALDO & MUTASI ----------
+    let saldoAwal = 42850000;
+    let mutasiData = [
+      { tgl: '2025-04-01', ket: 'Pembayaran Tagihan INV-001', kategori: 'Pemasukan', debet: 1300000, kredit: 0, admin: 'Ardi', pelanggan: 'Andi Susanto' },
+      { tgl: '2025-04-02', ket: 'Pembelian Router (Toko Jaya)', kategori: 'Pengeluaran', debet: 0, kredit: 4250000, admin: 'Ardi', supplier: 'Toko Jaya' },
+      { tgl: '2025-04-03', ket: 'Pembayaran Tagihan INV-002 (Cicilan)', kategori: 'Pemasukan', debet: 1200000, kredit: 0, admin: 'Ardi', pelanggan: 'PT. Maju Jaya' },
+      { tgl: '2025-04-05', ket: 'Pembelian Kabel UTP & Konektor', kategori: 'Pengeluaran', debet: 0, kredit: 750000, admin: 'Rina', supplier: 'Toko Makmur' },
+      { tgl: '2025-04-07', ket: 'Deposit Saldo Pelanggan', kategori: 'Pemasukan', debet: 2500000, kredit: 0, admin: 'Ardi', pelanggan: 'CV. Global' }
+    ];
+
+    let barangItems = [{ nama: 'Router WiFi 6', qty: 2, harga: 850000 }];
+
+    let currentFilterMutasi = 'all';
+
+    // Hitung saldo berjalan & statistik
+    function hitungStatistik() {
+      let saldo = saldoAwal;
+      let pemasukanBulanIni = 0, pengeluaranBulanIni = 0;
+      const bulanSekarang = new Date().getMonth() + 1;
+      const tahunSekarang = new Date().getFullYear();
+
+      const sorted = [...mutasiData].sort((a, b) => new Date(a.tgl) - new Date(b.tgl));
+
+      sorted.forEach((m, idx) => {
+        const tgl = new Date(m.tgl);
+        if (tgl.getMonth() + 1 === bulanSekarang && tgl.getFullYear() === tahunSekarang) {
+          pemasukanBulanIni += m.debet;
+          pengeluaranBulanIni += m.kredit;
+        }
+        saldo = saldo + m.debet - m.kredit;
+        m.saldoBerjalan = saldo;
+      });
+
+      document.getElementById('saldoSaatIni').innerText = 'Rp ' + saldo.toLocaleString('id');
+      document.getElementById('totalPemasukan').innerText = 'Rp ' + pemasukanBulanIni.toLocaleString('id');
+      document.getElementById('totalPengeluaran').innerText = 'Rp ' + pengeluaranBulanIni.toLocaleString('id');
+      // Piutang dummy (simulasi dari tagihan belum lunas)
+      document.getElementById('piutangTagihan').innerText = 'Rp 12.380.000';
+      return sorted;
+    }
+
+    // Render tabel mutasi
+    function renderMutasiTable() {
+      const sorted = hitungStatistik();
+      const tbody = document.getElementById('mutasiTableBody');
+      const filtered = sorted.filter(m => {
+        if (currentFilterMutasi === 'all') return true;
+        if (currentFilterMutasi === 'masuk') return m.debet > 0;
+        if (currentFilterMutasi === 'keluar') return m.kredit > 0;
+      }).reverse(); // terbaru di atas
+
+      tbody.innerHTML = filtered.map(m => `
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3">${new Date(m.tgl).toLocaleDateString('id')}</td>
+        <td class="px-4 py-3">${m.ket}</td>
+        <td class="px-4 py-3"><span class="${m.debet > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} px-2 py-1 rounded-full text-xs">${m.kategori}</span></td>
+        <td class="px-4 py-3 text-green-600 font-medium">${m.debet > 0 ? 'Rp ' + m.debet.toLocaleString('id') : '-'}</td>
+        <td class="px-4 py-3 text-red-500 font-medium">${m.kredit > 0 ? 'Rp ' + m.kredit.toLocaleString('id') : '-'}</td>
+        <td class="px-4 py-3 font-mono">Rp ${m.saldoBerjalan.toLocaleString('id')}</td>
+        <td class="px-4 py-3">${m.admin}</td>
+      </tr>
+    `).join('');
+    }
+
+    // Render barang di modal uang keluar
+    function renderBarangItems() {
+      const tbody = document.getElementById('barangItemsBody');
+      let total = 0;
+      tbody.innerHTML = barangItems.map((item, idx) => {
+        const subtotal = item.qty * item.harga;
+        total += subtotal;
+        return `<tr class="border-b">
+        <td class="px-3 py-2"><input type="text" value="${item.nama}" onchange="updateBarang(${idx}, 'nama', this.value)" class="w-full border-0 bg-transparent focus:ring-1 rounded px-1"></td>
+        <td class="px-3 py-2"><input type="number" min="1" value="${item.qty}" onchange="updateBarang(${idx}, 'qty', this.value)" class="w-16 border rounded px-1 py-0.5"></td>
+        <td class="px-3 py-2"><input type="number" value="${item.harga}" onchange="updateBarang(${idx}, 'harga', this.value)" class="w-28 border rounded px-1 py-0.5"></td>
+        <td class="px-3 py-2 font-semibold">Rp ${subtotal.toLocaleString('id')}</td>
+        <td class="px-3 py-2 text-center"><button onclick="removeBarang(${idx})" class="text-red-500"><i class='bx bx-trash'></i></button></td>
+      </tr>`;
+      }).join('');
+      document.getElementById('totalBarangDisplay').innerText = 'Total: Rp ' + total.toLocaleString('id');
+    }
+
+    window.updateBarang = (idx, field, val) => {
+      if (field === 'qty' || field === 'harga') barangItems[idx][field] = parseFloat(val) || 0;
+      else barangItems[idx][field] = val;
+      renderBarangItems();
+    };
+    window.removeBarang = (idx) => { barangItems.splice(idx, 1); renderBarangItems(); };
+    window.addBarangItem = () => { barangItems.push({ nama: 'Barang Baru', qty: 1, harga: 0 }); renderBarangItems(); };
+
+    // Simpan uang masuk
+    window.simpanUangMasuk = () => {
+      const sumber = document.getElementById('sumberDana').value;
+      const pelanggan = document.getElementById('dariPelanggan').value || '-';
+      const nominal = parseFloat(document.getElementById('nominalMasuk').value);
+      const ket = document.getElementById('ketMasuk').value || sumber;
+      if (!nominal || nominal <= 0) { Swal.fire('Error', 'Nominal tidak valid', 'warning'); return; }
+
+      mutasiData.push({
+        tgl: new Date().toISOString().slice(0, 10),
+        ket: `${ket} ${pelanggan !== '-' ? '(' + pelanggan + ')' : ''}`,
+        kategori: 'Pemasukan',
+        debet: nominal,
+        kredit: 0,
+        admin: 'Ardi',
+        pelanggan: pelanggan
+      });
+      renderMutasiTable();
+      updateChart();
+      Flowbite.Modal.getInstance(document.getElementById('uangMasukModal')).hide();
+      Swal.fire('Tersimpan', 'Uang masuk dicatat', 'success');
+      document.getElementById('nominalMasuk').value = ''; document.getElementById('ketMasuk').value = '';
+    };
+
+    // Simpan uang keluar (pembelian)
+    window.simpanUangKeluar = () => {
+      const supplier = document.getElementById('supplier').value;
+      const noFaktur = document.getElementById('noFaktur').value;
+      if (!supplier || barangItems.length === 0) { Swal.fire('Error', 'Supplier dan minimal 1 barang harus diisi', 'warning'); return; }
+      const total = barangItems.reduce((s, i) => s + (i.qty * i.harga), 0);
+      const namaBarang = barangItems.map(b => b.nama).join(', ');
+      const ket = `Pembelian ${namaBarang} dari ${supplier} ${noFaktur ? '(Faktur:' + noFaktur + ')' : ''}`;
+
+      mutasiData.push({
+        tgl: new Date().toISOString().slice(0, 10),
+        ket: ket,
+        kategori: 'Pengeluaran',
+        debet: 0,
+        kredit: total,
+        admin: 'Ardi',
+        supplier: supplier
+      });
+      renderMutasiTable();
+      updateChart();
+      barangItems = [{ nama: 'Router WiFi 6', qty: 2, harga: 850000 }];
+      renderBarangItems();
+      document.getElementById('supplier').value = ''; document.getElementById('noFaktur').value = ''; document.getElementById('ketKeluar').value = '';
+      Flowbite.Modal.getInstance(document.getElementById('uangKeluarModal')).hide();
+      Swal.fire('Tersimpan', 'Pengeluaran dicatat', 'success');
+    };
+
+    window.filterMutasi = (f) => { currentFilterMutasi = f; renderMutasiTable(); };
+
+    // GRAFIK dengan Chart.js
+    let chartInstance;
+    function updateChart() {
+      const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
+      const pemasukan = [12500000, 14800000, 15200000, 18250000, 0, 0];
+      const pengeluaran = [3200000, 4100000, 3800000, 5420000, 0, 0];
+      if (chartInstance) chartInstance.destroy();
+      const ctx = document.getElementById('cashFlowChart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: bulan,
+          datasets: [
+            { label: 'Pemasukan', data: pemasukan, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', tension: 0.3, fill: true },
+            { label: 'Pengeluaran', data: pengeluaran, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.05)', tension: 0.3, fill: true }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } } }
+      });
+    }
+
+    // Inisialisasi
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMutasiTable();
+      renderBarangItems();
+      updateChart();
+    });
+  </script>
+</body>
+
+</html>
